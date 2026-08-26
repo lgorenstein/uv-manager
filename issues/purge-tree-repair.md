@@ -12,7 +12,7 @@ lane: public
 A scratch purge is per-file on access time, so it removes a tool environment piecemeal while uv still
 records it as installed. uv performs no integrity check on an environment it believes is present; it
 execs a half-deleted venv and the user gets an `ImportError`. `uvm_doctor` finds this and prints
-commands for a human (`bin/uv-manager:806-831`). Nobody reads that from a compute node at 03:00, and
+commands for a human (`bin/uv-manager:1046-1071`). Nobody reads that from a compute node at 03:00, and
 automation cannot act on it.
 
 The requirement, in the maintainer's words: put `uv run ...` in a script that launches an application
@@ -127,10 +127,13 @@ Findings from the `purge-resilient-run` research that a promotion must not redis
   nothing to detect — so a criterion written only against the status concedes that class silently.
   Pair it with a `RECORD`-independent post-condition: a captured manifest re-materialised, and the
   tool's console script actually running.
-- **Sequencing.** The detector half is discharged; it shipped in 0.5.0. What remains is
-  [`issues/lock-ownership-and-hold-time.md`](lock-ownership-and-hold-time.md), whose defects become
-  live the moment anything holds the lock for a rebuild rather than a download. Promoting this first
-  means absorbing it.
+- **Sequencing.** The detector half is discharged; it shipped in 0.5.0. So is the lock ordering
+  constraint: the ownership and hold-time fix landed alongside it, so the defects that would have
+  become live the moment anything held the lock for a rebuild rather than a download are no longer
+  this cycle's to absorb. Its retained record is
+  [`spec/lock-ownership-and-hold-time/`](../spec/lock-ownership-and-hold-time/GOAL.md). What remains
+  above this cycle is [`issues/lock-break-instance-identity.md`](lock-break-instance-identity.md) —
+  the residual that fix narrowed rather than closed, which long holds are what make common.
 - Related: [`issues/uvm-bootstrap.md`](uvm-bootstrap.md) and
   [`issues/test-harness.md`](test-harness.md); R7 is the concurrency assertion that seed names as the
   hardest thing it must cover.

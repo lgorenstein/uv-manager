@@ -17,21 +17,6 @@ See `AGENTS.md` for why.
 
 ## Queued
 
-### The provisioning lock can be released by a process that does not hold it
-**Seed:** [`issues/lock-ownership-and-hold-time.md`](issues/lock-ownership-and-hold-time.md) · `fix` ·
-appetite medium · **adopted** as
-[`spec/lock-ownership-and-hold-time/`](spec/lock-ownership-and-hold-time/GOAL.md)
-
-In flight. Shaping accepted the seed's six criteria largely as written — it was already `shaped`, so
-this was acceptance rather than re-negotiation — and settled the two decisions it left open. R4 takes
-the **guard** rather than a documented constraint: releasing before the dispatch tail's `exec`s costs
-a builtin test and no fork, and `purge-tree-repair` acquires later in that path by design, so the
-guard makes the next cycle safe by construction. The early-out predicate generalization goes to
-`purge-tree-repair` as its R11, being needed only once something other than provisioning takes the
-lock. Appetite rounds to **big**. The sequencing stands: the blocking subset the repair cycle strictly
-needs is narrower — R1 and R3 — but the maintainer chose to take the cycle whole and in order rather
-than split it for earlier repair benchmarks.
-
 ### The break still deletes locks it did not judge, and nothing here can measure it yet
 **Seed:** [`issues/lock-break-instance-identity.md`](issues/lock-break-instance-identity.md) · `fix` ·
 appetite big — **R3 splits off as a `small` cycle, taken first**
@@ -64,8 +49,10 @@ construction where a bring-up subcommand — proposed and rejected during planni
 login node's tree and leave the job's untouched. What changed is the contract. Detection has a floor
 no budget removes, since a deleted distribution and every managed interpreter leave no manifest, so
 the criteria must name what is caught and concede the rest. Cost is handled by a verification receipt
-rather than an integrity stamp. The detector it reads shipped in 0.5.0; what remains above it is the
-lock fix.
+rather than an integrity stamp. The detector it reads shipped in 0.5.0, and the lock's ownership and
+hold-time fix landed with it, so the concurrency bug this cycle would otherwise have inherited is
+gone. What remains above it is `lock-break-instance-identity`, whose residual this cycle is what makes
+common.
 
 ### Three small code gaps behind inaccurate invariants
 **Seed:** [`issues/invariant-audit-gaps.md`](issues/invariant-audit-gaps.md) · `fix` · appetite small
