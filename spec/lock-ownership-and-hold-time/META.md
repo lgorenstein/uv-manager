@@ -546,3 +546,23 @@ fixture's `install.sh` — which is the first time this record counts concurrent
 instead of inferring them from install totals, and it is the seed's own R1 obligation discharged by
 review rather than by a committed harness. Cycle 2's two passes shared no finding; cycle 3's shared
 three, and disagreed only on disposition, which is the signal the variant exists to produce.
+
+## F26 — Step 5's drift sweep is scoped to incidental file overlap, and `--all` has no trigger
+`origin=uvm-roadmap:step-5 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-roadmap/SKILL.md`
+- **What happened:** retiring this cycle's seed surfaced a stale citation in
+  `issues/purge-tree-repair.md` — `bin/uv-manager:806-831`, where line 806 is now a bare `#`, because
+  the landed cycle grew the file from ~1000 to 1202 lines. It was caught only because the retirement
+  independently had to edit that file to repair a dangling link. Three surviving seeds that predate
+  the same growth were never opened. I offered `--all` on my own reading of the risk; nothing in the
+  skill prompted it.
+- **Skill cause:** Step 5 binds the drift sweep to "a figure the shipped cycle falsified — anywhere
+  in a file this retirement already edits." File overlap is uncorrelated with where drift is: it
+  tracks which cross-references broke, and citations rot wherever the shipped cycle moved code.
+  `--all` covers exactly this and Argument Parsing documents it, but no step says when to reach for
+  it, so it fires only if the agent reasons its way there unaided. This repository has already paid
+  for the failure once — cycle 2's F8 was a seed citing `main`'s line numbers.
+- **Recommended fix:** give `--all` a stated trigger in Step 5. When the landed cycle changed
+  `bin/uv-manager`'s line count materially — `git diff --stat {merge-base}..main -- bin/uv-manager`
+  is already cheap and available — recommend it in the Step 4 preview rather than waiting to be
+  asked, and say that citations in *unedited* seeds are the reason.
+- **Confidence:** high · **Effort:** small
