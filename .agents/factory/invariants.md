@@ -70,16 +70,81 @@ Only invoke the sections relevant to the change. Do not manufacture findings aga
 
 - The lock is an atomic **`mkdir`**, not `flock`. `flock` is what `uv` itself needs and is not enabled
   on every parallel filesystem; `mkdir` is atomic on Lustre, GPFS and NFS and needs no helper binary.
-- Released on `EXIT`, `INT` **and** `TERM`. A `RETURN` trap alone leaks the lock when the holder is
-  killed, and a leaked lock blocks every later invocation for that user until someone removes it by
-  hand.
-- Distinguish contention from failure: if the lock directory is absent after a failed `mkdir`, the
-  failure is permissions/quota/ENOSPC and waiting will never help — die with that message.
+- Released on `EXIT`, `INT` **and** `TERM`, and only while it is still **ours**. A `RETURN` trap alone
+  leaks the lock when the holder is killed, and a leaked lock blocks every later invocation for that
+  user until someone removes it by hand.
+- **Ownership, not path.** `uvm_acquire_lock` writes a `host`/`pid`/nonce line into the lock
+  directory's `owner` file; `uvm_unlock` removes the directory only while that file still holds the
+  line this process wrote. Absent, empty, truncated, unreadable and foreign all mean leave it — a
+  false leave is reclaimed by the stale breaker, a false delete destroys live mutual exclusion, which
+  is exactly what a holder broken as stale does when release matches on the path alone. The owner
+  write is fatal (a holder that cannot prove ownership leaks its own lock for a full stale window)
+  and the line is built from shell expansions with no forks, which narrows the `mkdir`-to-`owner`
+  window from 3.0 ms to 0.10 ms.
+- **No lock survives an `exec`.** `exec` replaces the process image, so the EXIT trap never runs;
+  every `exec` of the real `uv` releases first. Nothing acquires the lock that late in the dispatch
+  path today, which is what makes the guard cheap — on a path holding none it is one builtin test and
+  no fork. A new `exec` site owes the same call. Under the heartbeat this stops being hygiene: `exec`
+  preserves the pid, so a leaked lock's refresher keeps passing its `kill -0 "$$"` leash and nothing
+  can ever break the lock.
+- **Distinguish contention from failure by persistence, not by a second look.** A `mkdir` that failed
+  `EEXIST` and a holder that released before the `[[ ! -d ]]` test are indistinguishable afterwards,
+  so one absence is evidence of nothing: it reported a released lock as an unwritable filesystem for
+  2–4% of ranks in 64-way cold bursts, on GPFS and on APFS. The waiter retries, and reports the
+  permissions/quota/ENOSPC fault — with the same message — only once a literal bound of attempts has
+  each found the lock gone. The bound is a constant in the script, never an environment variable, and
+  the count never resets: a monotonic count is what stops an alternation of absent-retry and
+  successful break from evading the timeout accounting.
 - The early-out inside the wait loop must test **the version this call was asked for**. Testing "is
   some uv present" silently hands a pinned caller whatever another process was installing, which is
   the one guarantee a pin exists to provide.
-- Break a lock older than `UVM_LOCK_STALE`; time out after `UVM_LOCK_TIMEOUT` with the
-  exact `rmdir` command to recover.
+- **Age is measured from the heartbeat, not from acquisition.** `uvm_acquire_lock` spawns a detached
+  refresher that rewrites `${lock}/owner` with byte-identical content every `UVM_LOCK_STALE/10`
+  seconds; `uvm_unlock` reaps it with `kill` **then** `wait`.
+- **The refresher's leash is a pid and a start time, never a pid alone.** `kill -0 "$$"` answers for
+  a number the kernel reuses, so a holder killed without running its traps leaves a refresher that
+  keeps rewriting `owner` the moment that number is reoccupied. Nothing then recovers the lock: the
+  age net cannot fire because the mtime keeps moving, and the waiter's own probe cannot fire because
+  it finds the reoccupying process alive. `uvm_acquire_lock` records `uvm_proc_start "$$"` beside the
+  host token, above the `mkdir` loop, and the refresher forfeits when the pid's start time no longer
+  matches. Both readings must be non-empty to forfeit, so a `ps` that cannot answer degrades to the
+  bare probe rather than costing a live holder its lock. A ceiling on the refresher's lifetime is the
+  rejected alternative: a hold that outlives it silently loses the protection the heartbeat exists to
+  give.
+  `uvm_age` stats `${lock}/owner` and falls back to the directory, because a directory's mtime tracks
+  its entry list rather than writes to files inside it — left on the directory the heartbeat is
+  invisible and a long hold is broken as abandoned. The refresher re-reads `owner` before every
+  write: stamping our identity over a new holder's record would stop *that* holder from ever
+  releasing, an immortal lock manufactured by the ownership rule above.
+- **Liveness is a fast path, never a substitute for age.** A holder on this host whose pid is gone
+  loses its lock at once instead of waiting out the stale window. Every other lock is decided by the
+  mtime, *including one whose recorded pid answers* — `kill -0` answers for a pid number and not for
+  the process that recorded it, and pid space wraps in under a minute on a node spawning `uv run` in
+  a loop. Gate the age test behind a negative probe and a lock left by a killed holder is unbreakable
+  for the lifetime of whatever inherits its pid, which is a leak only a human clears. What keeps a
+  live holder's lock is the heartbeat, which fits ten beats inside the threshold, and not the age
+  test failing to run.
+- **The host token is `uname -n`.** `HOSTNAME` is whatever bash inherited — a container image sets
+  it, `sbatch --export=ALL` carries a login node's copy onto every compute node — and the token
+  decides whether a recorded pid may be probed locally. Two nodes presenting one name has a waiter
+  probe a pid that lives on the other, find it absent, and break a live lock on its first iteration.
+  It resolves once, before the `mkdir`, so the owner line is still assembled from expansions alone.
+- **`UVM_LOCK_TIMEOUT` must be less than `UVM_LOCK_STALE`**, and `uvm_acquire_lock` refuses the
+  inversion rather than acting on it — a waiter that outlives the threshold breaks the lock it is
+  waiting for. The guard tests numeric form *before* the comparison, because on bash 3.2 a
+  non-numeric value makes the arithmetic fatal under `set -u` and the EXIT trap's status then
+  overrides the error's, so the script exits 0 and `VER=$(uv --version)` comes back empty and true.
+  It then forces base 10 onto the same globals every later reader uses: bash reads `0600` as 384, and
+  `0800` passes a digits-only test and then errors non-fatally inside the comparison, which
+  *accepts*. The guard lives inside the function, never at load time, so `uvm help` and
+  `uvm --version` still answer on a misconfigured node.
+- Break a lock older than `UVM_LOCK_STALE`; time out after `UVM_LOCK_TIMEOUT` naming the holder the
+  `owner` file records and a recovery command that works —
+  `rm -f '<lock>/owner' && rmdir '<lock>'`. A bare `rmdir` reports `Directory not empty` for every
+  lock whose holder got as far as claiming it, because `owner` is inside the directory it removes.
+  The message also says that a recorded pid is on the host recorded beside it: a stalled user who
+  probes it locally concludes the holder is gone and deletes a live lock. Every break note carries
+  the same owner line, since the file that answers "whose lock was that" is deleted with it.
 
 ## 6. Installer environment
 

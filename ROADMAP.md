@@ -19,14 +19,41 @@ See `AGENTS.md` for why.
 
 ### The provisioning lock can be released by a process that does not hold it
 **Seed:** [`issues/lock-ownership-and-hold-time.md`](issues/lock-ownership-and-hold-time.md) · `fix` ·
-appetite medium
+appetite medium · **adopted** as
+[`spec/lock-ownership-and-hold-time/`](spec/lock-ownership-and-hold-time/GOAL.md)
 
-`uvm_unlock` matches on path, never on ownership, so once a waiter breaks a lock as stale the original
-holder's unlock removes the *new* holder's directory — captured live, mutual exclusion gone. Nothing
-enforces `UVM_LOCK_TIMEOUT < UVM_LOCK_STALE`, and the inverted order makes a process break its own
-lock and exit 0. Latent on `main`, because every path needs a holder outliving the 600 s stale age,
-and a download rarely does. Sequenced here because a rebuild does, so the repair cycle would otherwise
-inherit a concurrency bug it did not create.
+In flight. Shaping accepted the seed's six criteria largely as written — it was already `shaped`, so
+this was acceptance rather than re-negotiation — and settled the two decisions it left open. R4 takes
+the **guard** rather than a documented constraint: releasing before the dispatch tail's `exec`s costs
+a builtin test and no fork, and `purge-tree-repair` acquires later in that path by design, so the
+guard makes the next cycle safe by construction. The early-out predicate generalization goes to
+`purge-tree-repair` as its R11, being needed only once something other than provisioning takes the
+lock. Appetite rounds to **big**. The sequencing stands: the blocking subset the repair cycle strictly
+needs is narrower — R1 and R3 — but the maintainer chose to take the cycle whole and in order rather
+than split it for earlier repair benchmarks.
+
+### The break still deletes locks it did not judge, and nothing here can measure it yet
+**Seed:** [`issues/lock-break-instance-identity.md`](issues/lock-break-instance-identity.md) · `fix` ·
+appetite big — **R3 splits off as a `small` cycle, taken first**
+
+What `lock-ownership-and-hold-time` narrowed but did not close. A forfeiture decided from an `owner`
+line read a second ago is acted on against a path, and a path is not an instance, so a losing breaker
+deletes a lock a third process just won. The shipped guard re-reads `owner` before acting; that
+narrows the owner-present case and is vacuous for a lock that had none. The exclusive rename is the
+obvious fix and is wrong twice over: `mv -T` does not exist at the portability floor, so `mv` nests
+instead of failing, and `rmdir` refusing a non-empty directory turned out to be the thing protecting
+established locks.
+
+**R3 — the robbed winner's death — comes out and goes first.** Review cycle 3 established that it is
+authored by the shipped cycle rather than inherited, `main` continuing where the branch dies, and
+that it needs none of the measurement debt the rest of this seed blocks on: the ENOENT state is
+constructible in one process, so a candidate is graded pass/fail rather than against noise. Its
+deferral from that cycle is a recorded maintainer override, not a rubric exception.
+
+R1 and R2 stay behind measurement — 320 ranks gave 5 robbed winners against 2, which is noise — so
+the harness comes first and the fix follows it. Carries the lock's unmeasured performance claims and
+its taken-on-trust safety properties. Sequenced above `purge-tree-repair`, which is what makes long
+holds real and this defect common.
 
 ### `uv run` rehydrates a purged tree, gated by `UVM_REPAIR`
 **Seed:** [`issues/purge-tree-repair.md`](issues/purge-tree-repair.md) · `feature` · appetite big
@@ -39,6 +66,31 @@ no budget removes, since a deleted distribution and every managed interpreter le
 the criteria must name what is caught and concede the rest. Cost is handled by a verification receipt
 rather than an integrity stamp. The detector it reads shipped in 0.5.0; what remains above it is the
 lock fix.
+
+### Three small code gaps behind inaccurate invariants
+**Seed:** [`issues/invariant-audit-gaps.md`](issues/invariant-audit-gaps.md) · `fix` · appetite small
+
+Fallout from auditing `invariants.md` against the code during `lock-ownership-and-hold-time` planning.
+`uvm_global_takes_value` misses `--cache-dir` and `--python-preference`, both of which `uv 0.12.4`
+accepts before a subcommand with a separate value — measured, and `--cache-dir` is the only way left to
+redirect a cache the wrapper otherwise exports. The trampoline overwrite guard tests `-x`, so an
+unmarked 0644 file somebody wrote is silently replaced. The rename in `uvm_install` is unguarded and
+leaves a `.incoming.` directory nothing collects. Small and independent; the corresponding text
+repairs are harness work and land separately. Sequenced after `purge-tree-repair` because R3 may fold
+into it.
+
+### `.claude` is a symlink, so no agent can create a worktree
+**Seed:** [`issues/claude-dir-shim.md`](issues/claude-dir-shim.md) · `refactor` · appetite small
+
+`.claude` is a committed symlink to `.agents`, and Claude Code refuses to create a worktree under a
+symlinked `.claude` — a committed symlink there could redirect writes outside the repository, and it
+cannot tell this one from a hostile one. An agent asking for worktree isolation dies rather than
+degrading. The fix is to make `.claude/` a real directory of symlinks back into `.agents/`, which
+keeps `.agents/` canonical and turns `.claude/` into the per-tool shim it actually is. The cost is
+that one symlink becomes three and three can drift, so it owes a new `lint.sh` check; the existing
+one covers `bin/{uv,uvx,uvm}` only. Sequenced here because it is cheap and it unblocks worktree
+isolation for every cycle below it, but nothing is blocked on it — copying the tree to `/tmp` works
+and is what the probes that found this did.
 
 ### A curl-installable bootstrap
 **Seed:** [`issues/uvm-bootstrap.md`](issues/uvm-bootstrap.md) · `feature` · appetite medium
@@ -56,8 +108,9 @@ story that cycle starts.
 The two hard parts for a shell script — mocking the network and the filesystem — are already solved by
 `temp_root.sh` and the `file://` installer fixture. What is missing is a runner, a corpus of cases,
 and a coverage measurement. It converts the factory's process guarantees into actual coverage, and it
-now carries two regression cases that shipped cycles owe it: R3a from the `UVM_PLATFORM` trampoline
-fix, and R3b from the state-directory guard. Sequenced below the operational gaps above only because
+now carries four regression cases that shipped cycles owe it: R3a from the `UVM_PLATFORM` trampoline
+fix, R3b from the state-directory guard, R3c from `uvm doctor`'s detection contract, and R3d for the
+lock's ownership and hold-time contract. Sequenced below the operational gaps above only because
 those are live; nothing about its value has changed.
 
 ### An onboarding guide for the factory
