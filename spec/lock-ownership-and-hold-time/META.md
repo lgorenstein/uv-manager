@@ -275,7 +275,7 @@
 - **Confidence:** high · **Effort:** medium
 
 ## F13 — `harness-log.md` entries run 3x the format the file itself specifies
-`origin=harness-audit:ledger-format severity=high category=instruction status=open target=.agents/factory/harness-log.md`
+`origin=harness-audit:ledger-format severity=high category=instruction status=applied target=.agents/factory/harness-log.md`
 - **What happened:** the file's own header specifies one section per decision — header line, metadata
   line, one `**Rationale:**` bullet. Measured over its 54 entries: **mean 10.1 lines, median 9, max
   18**, roughly 3x the documented shape. Step 7 of `/uvm-harness` likewise asks for "a one-line

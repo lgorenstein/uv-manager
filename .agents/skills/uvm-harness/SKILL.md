@@ -167,7 +167,8 @@ A red check is a STOP — fix or revert that commit.
 
 ### Step 7 — Log every decision (the ledger)
 Append one entry per **applied** and **rejected** decision, and notable **deferred** ones, to
-[`harness-log.md`](../../factory/harness-log.md), with the commit SHA and a one-line rationale. This is
+[`harness-log.md`](../../factory/harness-log.md), with the commit SHA and a rationale in that file's
+documented shape — one bullet, long enough to carry what a later run needs and no longer. This is
 the anti-thrash memory the *next* run reads. Include `harness-log.md` in the run's commits.
 
 ### Step 8 — Report (and PR, in `pr` mode)

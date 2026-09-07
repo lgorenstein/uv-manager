@@ -18,6 +18,13 @@ Entry format — one section per decision, newest at the bottom:
   would-weaken-a-gate) / why deferred.
 ```
 
+**One bullet, and it earns its length rather than counting it.** What a later run reads this file for
+is not the summary — it is the part that stops a fix being re-applied or re-argued: a fix that was
+**rejected** and on what ground, a departure from the finding's own recommendation, a cross-reference
+to the commits a decision builds on or narrows, and a mis-citation caught before it landed. An entry
+carrying those is doing its job at eight lines; one compressed past them is shorter and useless. Keep
+out what the `META.md` finding already says — this ledger records the *outcome*, not the diagnosis.
+
 Read `origin`, `severity` and `category` from the finding in `META.md`; this ledger records the
 *outcome*.
 
