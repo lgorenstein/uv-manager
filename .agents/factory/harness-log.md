@@ -23,10 +23,8 @@ is not the summary — it is the part that stops a fix being re-applied or re-ar
 **rejected** and on what ground, a departure from the finding's own recommendation, a cross-reference
 to the commits a decision builds on or narrows, and a mis-citation caught before it landed. An entry
 carrying those is doing its job at eight lines; one compressed past them is shorter and useless. Keep
-out what the `META.md` finding already says — this ledger records the *outcome*, not the diagnosis.
-
-Read `origin`, `severity` and `category` from the finding in `META.md`; this ledger records the
-*outcome*.
+out what the `META.md` finding already says: read `origin`, `severity` and `category` from there,
+because this ledger records the *outcome*, not the diagnosis.
 
 ---
 
@@ -629,3 +627,71 @@ Read `origin`, `severity` and `category` from the finding in `META.md`; this led
 ## 2026-09-07 — lock-ownership-and-hold-time F21: the re-run rule selected gates by depends_on
 `decision=applied commit=eda1e51 target=.agents/skills/uvm-build/SKILL.md`
 - **Rationale:** `depends_on` encodes build order, not assertion overlap; in a one-script repository every phase edits the same function, and following the letter re-ran one gate of six. Restated by surface — every `done` phase whose gate exercises a function the edit touched, normally all of them. Complements F9 above rather than duplicating it: F9 covers when to sweep, this covers what to sweep.
+
+## 2026-09-07 — lock-acquire-retake F1: the fix-criteria rule was absolute, its rationale conditional
+`decision=applied commit=d782bbd target=.agents/skills/uvm-feature/SKILL.md`
+- **Rationale:** **rejected the finding's own fix**, which asked to loosen the prohibition once a landed cycle has measured the mechanism. Safety §4 prefers a clarification to a new rule, and the prohibition is a quality rule as much as an epistemic one — criteria phrased as behavior let the implementation vary. Clarified instead what it never forbade: a WHEN clause naming the triggering state is not a diagnosis, and a measured mechanism belongs in the *Checked by* gate. The cycle that filed this had in fact complied.
+
+## 2026-09-07 — lock-ownership-and-hold-time F1: `shaped` was read as fully settled
+`decision=applied commit=8329c01 target=.agents/skills/uvm-feature/SKILL.md`
+- **Rationale:** the branch says "do not re-litigate, adopt as written", and a seed had explicitly parked two decisions for promotion, one of them a scope difference (a guard in the dispatch tail versus a comment). Named the distinction rather than adding a step: re-litigation reopens what the seed decided; a parked decision is what it left open. The optional `templates/ISSUE.md` half of the recommendation was not taken — marking parked decisions in the template is a separate change and nothing yet shows prose is failing to carry them.
+
+## 2026-09-07 — lock-ownership-and-hold-time F2: a GOAL's *Checked by* clauses were never executed
+`decision=applied commit=a5fa08e target=.agents/skills/uvm-feature/SKILL.md`
+- **Rationale:** `/uvm-feature` writes these commands and `/uvm-plan` Step 6 was the first step required to run any, so a clause that can never pass (`git grep -c flock` "returning 0", against a file whose comment names `flock`) reaches `TECH.md` as a permanently red gate walking `--record-attempt` toward the circuit breaker with correct code underneath. Placed in Step 5 rather than as a new step, so the coherence check that already re-reads the GOAL also runs its commands.
+
+## 2026-09-07 — lock-acquire-retake F2: two Step 3 rules claimed the fan-out with no precedence
+`decision=applied commit=4592565 target=.agents/skills/uvm-plan/SKILL.md`
+- **Rationale:** the diagnostic exception ends "when they disagree with the GOAL, the GOAL wins" and the high-blast-radius exception written immediately after it had no tie-break, so a GOAL resolving the opposite left both binding. Deliberately did **not** mirror the diagnostic tie-break: this exception exists because a human can under-scope an edit in this region, so a GOAL narrows the fan-out's breadth but cannot eliminate it, and the narrowing is recorded in `PLAN.md`.
+
+## 2026-09-07 — lock-acquire-retake F3: the inert-gate rule had no case for a regression gate
+`decision=applied commit=7b0de8b target=.agents/skills/uvm-plan/SKILL.md`
+- **Rationale:** a collateral criterion demands behavior *not* change, so its gate is green before and after by construction and the "exits 0 today is inert" rule read literally would have discarded four correct gates. Scoped the exemption to the gate and explicitly not to the phase — a phase carrying only regression gates still owes one post-condition red today — so the rule cannot become a route around falsifiability.
+
+## 2026-09-07 — lock-ownership-and-hold-time F8: the invariant gate was never checked against the checklists
+`decision=applied commit=8b9476d target=.agents/skills/uvm-plan/SKILL.md`
+- **Rationale:** a plan asserted load-time placement was rejected because it would kill `uvm help` on a misconfigured node, then a checklist two sections later specified exactly that; the gate and the phases are written in separate passes and nothing reconciled them. One question per gate bullet — which phase would violate this? — placed at the end of Step 6 where the phases exist, not in Step 5 which runs before them.
+
+## 2026-09-07 — lock-ownership-and-hold-time F3: the gate style reference documented the wrong default
+`decision=applied commit=71f1af2 target=.agents/factory/templates/TECH.md`
+- **Rationale:** every gate in this project is a multi-line sandbox drive, which double-quoted style cannot express, and the previous cycle's gates round-tripped into near-unreadable folded scalars. Made `|` the documented default for anything longer than one command and kept the escaping warning scoped to the one-liner where it is true. Verified `|` round-trips through `next_phase.py`'s PyYAML with heredocs intact.
+
+## 2026-09-07 — lock-ownership-and-hold-time F16: a drive dying at the wrapper reported nothing
+`decision=applied commit=c70d818 target=.agents/factory/templates/TECH.md`
+- **Rationale:** the conventions require every *assertion* to print a `FAIL:` line and said nothing about the drive command, so a call that died on a refusal aborted under `set -e` and exited 1 having printed nothing — the diagnostic sat unread in the sandbox and was deleted with it. Stated where gates are authored rather than in the skill, because the idiom that causes it (redirect stderr, assert later) is a template convention.
+
+## 2026-09-07 — lock-ownership-and-hold-time F10: a paragraph cancelled itself and misdirected `pre-release`
+`decision=applied commit=8ceb60a target=.agents/skills/uvm-release/SKILL.md`
+- **Rationale:** **a deletion, net −3 lines.** "There are no tags yet" died 1h46m after `33a91fb` wrote it and five tagged releases have shipped; worse than inert, it pointed a `pre-release` run at suffix-free tags against the STOP a few lines above. Its live rules already sat in the *Version* bullet, so only the non-duplicated rationale — bare `X.Y.Z` is what makes `git tag -l` and `--version` agree — was grafted there.
+
+## 2026-09-07 — lock-ownership-and-hold-time F11: three scope claims the sibling-intake commit falsified
+`decision=applied commit=1592ac7 target=.agents/factory/methodology.md`
+- **Rationale:** `bced44f` gave the operational siblings a place to file a finding and left three sentences asserting the old scope, one inside its own diff. Heeded the finding's warning against the obvious rewrite: `methodology.md` names `META.md` as the exception for `/uvm-roadmap` and `/uvm-release` *only*, since a blanket "all three may append" would license the meta-on-meta recursion that document forbids. Corrected the finding's stated reason for the third claim — `/uvm-build` writes `.agents/` not by skill instruction but through `AGENTS.md`'s same-commit rule, as `c44b4c0` did to `invariants.md`.
+
+## 2026-09-07 — lock-ownership-and-hold-time F15: no skill owned a mid-cycle GOAL amendment
+`decision=applied commit=c9b72a4 target=.agents/factory/methodology.md`
+- **Rationale:** **scoped down from the finding's fix**, which proposed a `/uvm-feature` mode accepting a feature branch. Documented the route the maintainer has now taken twice — one commit on the cycle's branch carrying the whole artifact set, naming the circuit-breakers it crosses and supplying `AGENTS.md`'s sign-off where it overturns an invariant — without building the mode. `harness-log.md` F3 already carried this as `deferred`, "real and unfixed"; documenting what happens is the half that stops it being undocumented, and it does not foreclose the mode.
+
+## 2026-09-07 — lock-ownership-and-hold-time F26: the drift sweep had no trigger for `--all`
+`decision=applied commit=a0e4553 target=.agents/skills/uvm-roadmap/SKILL.md`
+- **Rationale:** Step 5 bound the sweep to files the retirement already edits, which is uncorrelated with where citations rot — they rot wherever the shipped cycle moved code. Three seeds predating the same growth were never opened, and this repository already paid for it once at cycle 2's F8. Gave `--all` a stated trigger cheap enough to always run, and said the reason is seeds the sweep never opens.
+
+## 2026-09-07 — lock-ownership-and-hold-time F22: a new primitive was designed before it was checked
+`decision=applied commit=eabdf83 target=.agents/skills/uvm-build/SKILL.md`
+- **Rationale:** a design turned on `rename(2)` being atomic and exclusive — true of the syscall, irrelevant to a script that can only call `mv`, and contradicted by `uvm_point_current`'s documented fallback eleven lines from code read that session. Step 2 points at the region a phase *edits*, never at the region its new mechanism depends on. One grep, in Step 3, before the design rather than after the approval.
+
+## 2026-09-07 — lock-ownership-and-hold-time F23: a mid-build design fork had no route to a human
+`decision=applied commit=9a50895 target=.agents/skills/uvm-build/SKILL.md`
+- **Rationale:** Step 3 modelled divergence as a free amendment or a contract violation, and a decision that is the maintainer's but does not touch the GOAL fell between them, landing as unchecked boxes in `TECH.md` describing work nobody had agreed to. Gave the middle case the shape `GOAL.md` already uses for a clarification — options, blast radius, ask, dated line — so a reversal has somewhere to attach.
+
+## 2026-09-07 — lock-ownership-and-hold-time F24: a later cycle undercutting a deferral had no rule
+`decision=applied commit=a90b6f2 target=.agents/skills/uvm-review/SKILL.md`
+- **Rationale:** the correction machinery is scoped to a finding a later cycle overturned; a *disposition* is not a finding, and a deferral a human cleared is not the agent's to reopen. The applied rule routes rather than answers: report the newly-measured part under a new id, correct against the disposition, hand keep-or-reopen to the human as a gate item. Sits beside the deferral exception `cd995b4` added, which is the thing it qualifies.
+
+## 2026-09-07 — lock-ownership-and-hold-time F12: the applier has never said no
+`decision=applied commit=45f624c target=.agents/skills/uvm-harness/SKILL.md`
+- **Rationale:** re-measured today rather than trusting the finding's figures: 4429 lines added under `.agents/` against 174 deleted, 63 applied against **0** rejected, and Safety §6's previously-rejected branch never once written to. Every run now owes a rejection or a deletion candidate, or a plain statement it found neither. Tightens rather than loosens, so Safety §3 does not bite — but it edits the applier's own procedure, so it went in front of the maintainer regardless. This run supplied both: F10 is a deletion, F13 the first recorded rejection.
+
+## 2026-09-07 — lock-ownership-and-hold-time F13: ledger entries ran 3x the documented format
+`decision=applied commit=8d888a0 target=.agents/factory/harness-log.md`
+- **Rationale:** **split — the backfill of 63 entries is rejected, the forward rule applied.** Measured before acting: 62 of 63 entries are already a single `**Rationale:**` bullet, so the drift is length, not format, and the length is what a later run actually reads — `b8afd6a` spends its nine lines on two cross-referenced commits, an explicit rejection and its ground, and two mis-citations caught before landing. Compressing that to three lines deletes precisely the anti-thrash memory Safety §6 consults, and the finding's own GATE FLAG argues for keeping it ("rejection history has no horizon"). Inverted the fix: the spec was wrong, not the entries — the format block and Step 7's "one-line rationale" now describe what an entry must carry, length earned rather than counted. **The payload complaint is real and stays open:** 624 lines read end to end every run, whose two cheap remedies — pruning and relaxing that read — the GATE FLAG forbids without a typed override that was not requested.
