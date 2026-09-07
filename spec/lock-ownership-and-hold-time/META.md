@@ -338,7 +338,7 @@
 - **Confidence:** high · **Effort:** medium
 
 ## F16 — a gate whose drive dies at the wrapper reports nothing at all
-`origin=uvm-build:P5 severity=medium category=missing-guidance status=open target=.agents/factory/templates/TECH.md`
+`origin=uvm-build:P5 severity=medium category=missing-guidance status=applied target=.agents/factory/templates/TECH.md`
 - **What happened:** P5's stale-break drive ran `UVM_LOCK_STALE=1 UVM_LOCK_TIMEOUT=10 uv --version`
   under `set -e` with the wrapper's stderr redirected into the sandbox for a later `grep`. P4 had made
   that pair illegal, so the call died on the refusal, `set -e` aborted the drive before any assertion,

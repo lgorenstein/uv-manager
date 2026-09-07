@@ -74,6 +74,11 @@ work. `uvm-build` executes the next actionable phase, runs its `verify:` command
   `next_phase.py`'s PyYAML cleanly. Reserve double-quoted style for a true one-liner, where `\n`,
   `\t` and `\\` are YAML escapes rather than shell ones and a `\n` splits the command where no shell
   ever sees it; keep such a gate free of backslashes apart from `\"`.
+  A drive command whose failure aborts the drive is guarded, never left bare under `set -e`:
+  `if ! cmd …; then echo "FAIL: <what it was doing>" >&2; cat "$err" >&2; exit 1; fi`. Redirecting the
+  wrapper's stderr to a file and asserting against it afterwards makes the wrapper's own diagnostic
+  invisible on the one path where the drive never reaches an assertion, and silence there is
+  indistinguishable from a harness bug.
 - `review.cycle`: completed review passes, auto-incremented by every `set_phase.py --verdict`.
   `REVIEW.md`'s "Cycle {n}" mirrors it and the two-to-three-cycle bound is graded against it.
 
