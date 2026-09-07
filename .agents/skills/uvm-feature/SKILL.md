@@ -187,6 +187,12 @@ republishes an attack mechanism for a weakness that is still live.
 Re-read the GOAL. Is it solved, bounded to the appetite, and free of unresolved markers? Is every
 requirement testable and observable? If not, iterate with the human before committing.
 
+Then run every *Checked by* clause that is a literal command against the current tree and record what
+it returned. A clause that cannot pass, or that passes before the work is done, is not a criterion —
+and it will be transcribed into a `verify:` that walks `--record-attempt` toward the circuit breaker
+while the code is correct. This is `/uvm-plan` Step 6's discipline one stage earlier, where these
+commands are first written and cheapest to test.
+
 ### Step 6 — Meta-note (self-improvement loop · silence by default)
 Before committing, reflect on the **skillset itself** — not the task, not the code. Write nothing
 unless the bar is met.

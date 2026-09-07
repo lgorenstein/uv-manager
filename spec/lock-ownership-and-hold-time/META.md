@@ -65,7 +65,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F2 — a GOAL's *Checked by* clauses are written but never executed
-`origin=uvm-plan:step-3 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-feature/SKILL.md`
+`origin=uvm-plan:step-3 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-feature/SKILL.md`
 - **What happened:** two of this GOAL's six *Checked by* clauses were not executable as written. R6's
   `git grep -c flock bin/uv-manager` "returning 0" can never pass — `:172` names `flock` in the comment
   recording why the discipline is `mkdir`, so it returns `bin/uv-manager:1` and exits 0. R4's clause
