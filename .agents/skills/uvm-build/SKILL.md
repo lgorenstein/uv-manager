@@ -139,6 +139,11 @@ grep: the floor forbids what the syscall underneath happily provides — `rename
 exclusive, `mv -T` does not exist at the floor — and `uvm_point_current` already carries the
 documented fallback that says so.
 
+A design decision that is the maintainer's but does not touch `GOAL.md` is the middle case between
+those two, and it has one shape: state the options and their blast radius, ask, and record the answer
+as a dated line in the phase body the way `GOAL.md` records a clarification. Do not leave unchecked
+boxes describing work nobody has agreed to — a reversal then has nowhere to attach.
+
 ### Step 4 — Verify gate
 Run the phase's `verify:` command, plus any additional drive the change warrants. "Green" means **the
 asserted post-condition held** — the observed tree, symlink target, exit code or stderr line is

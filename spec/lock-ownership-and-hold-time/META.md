@@ -486,7 +486,7 @@ on the record instead of a default nobody examined.
 - **Confidence:** high · **Effort:** small
 
 ## F23 — a mid-build design fork has no route to a human that is not a finished plan
-`origin=uvm-build:step-3 severity=low category=missing-guidance status=open target=.claude/skills/uvm-build/SKILL.md`
+`origin=uvm-build:step-3 severity=low category=missing-guidance status=applied target=.claude/skills/uvm-build/SKILL.md`
 - **What happened:** P8's checklist had to carry two candidate designs and the sentence "the design
   is not settled and is a human's call", because the skill's only escalation is "STOP and escalate on
   a `GOAL.md` contradiction". This was not a contradiction — it was a fork inside the appetite where
