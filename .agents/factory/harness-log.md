@@ -557,3 +557,44 @@ Read `origin`, `severity` and `category` from the finding in `META.md`; this led
   before `set_phase.py --reviewed-commit`. Carried into `uvm-review` Step 4 in the same commit,
   which still routed every CONFIRMED to blocked and would otherwise contradict the rubric, the shape
   `9228a75` and `f6748ef` were written to stop.
+
+## 2026-09-07 — lock-acquire-retake F4: the debate variant's two reviewers shared one scratchpad
+`decision=applied commit=e74710d target=.agents/skills/uvm-review/SKILL.md`
+- **Rationale:** both reviewers wrote a `mkdir` PATH shim to the same path; one reported its fixture
+  overwritten mid-pass and re-ran its whole set isolated, and the other returned a HEAD failure rate
+  the orchestrator's instrumented re-measurement could not reproduce. The variant's entire claim is
+  two independent measurements, and shared mutable fixtures make them dependent in a way neither
+  reviewer can detect from inside — the drives still complete and still look like evidence. Does not
+  re-litigate `b01bbe2`, which settled that the variant is offered and never automatic; this is
+  about isolating the reviewers it launches, not when to launch them.
+
+## 2026-09-07 — lock-ownership-and-hold-time F20: Step 2 inlined a file inside the graded diff
+`decision=applied commit=e2d26c3 target=.agents/skills/uvm-review/SKILL.md`
+- **Rationale:** `invariants.md` is routinely part of the diff under review, so pasting it hands the
+  reviewer an orchestrator-mediated second version of the thing being graded, and doubles a long
+  prompt across two reviewers. Both it and `review-rubric.md` sit outside `spec/`, so reading them
+  from the working tree costs no blindness. `GOAL.md` stays inline for the reason it always was — it
+  lives under `spec/`, which the reviewer must not browse. Independently confirmed before the
+  finding was read: this cycle's orchestrator pointed at the paths rather than pasting, for the same
+  reason. Leaves `5d65af7`'s cited-`spec/`-record exception untouched.
+
+## 2026-09-07 — lock-ownership-and-hold-time F19: the debate variant defined its input, not its output
+`decision=applied commit=1e3b128 target=.agents/factory/review-rubric.md`
+- **Rationale:** **departed from the finding's own fix**, which named two modes — overlap as a
+  confidence signal, disjointness as a coverage signal. This cycle produced a third its categories do
+  not cover: the two reviewers *contradicted* each other, one clean and one CONFIRMED HIGH on the
+  same function. Contradiction is a claim about reproducibility rather than about coverage, and the
+  applied text says the orchestrator settles it by measuring — with a control proving the
+  construction reaches the state at all before a clean result is read as absence, which is the step
+  that actually resolved it here and the one neither reviewer performed. Recording which of the three
+  occurred is kept from the finding as written.
+
+## 2026-09-07 — lock-ownership-and-hold-time F25: the loop bound had no terminal state
+`decision=applied commit=ee91e9f target=.agents/factory/review-rubric.md`
+- **Rationale:** "at most two or three" is a range with no tiebreak, ambiguous at exactly the cycle
+  where it binds, and a prior cycle-3 verdict had to invent its reading and write it into `REVIEW.md`
+  as if it were the rule. Cycle 3 is now the last that may set `changes-requested`, and escalation is
+  a named handoff — standing findings, remediation delta, ship/abandon/rescope — rather than an
+  unspecified event. Carried into `uvm-review`'s Safety Principles and Final report in the same
+  commit, both of which mirrored the old range and would otherwise contradict the rubric: the shape
+  `cd995b4` recorded and `9228a75`/`f6748ef` were written to stop.
