@@ -87,7 +87,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F3 — the `verify:` field reference documents the style that cannot express a real gate
-`origin=uvm-plan:step-6 severity=low category=template status=open target=.agents/factory/templates/TECH.md`
+`origin=uvm-plan:step-6 severity=low category=template status=applied target=.agents/factory/templates/TECH.md`
 - **What happened:** the field reference explains double-quoted scalar style at length — which
   characters are YAML escapes, how a `\n` splits the command where no shell sees it — and mentions a
   block scalar only as a trailing alternative. Every gate in this cycle is a multi-line heredoc drive

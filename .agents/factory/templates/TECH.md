@@ -68,11 +68,12 @@ work. `uvm-build` executes the next actionable phase, runs its `verify:` command
   circuit breaker runs on this file, not on session memory.
 - `verify`: the exact command that proves the phase. Drive the real script under
   `.agents/factory/bin/temp_root.sh` so it never touches the developer's real state root, and assert
-  a **post-condition**, not just exit 0. The value is a YAML scalar before it is a shell command: in
-  double-quoted style — the style the frontmatter above uses, because deferring `$` expansion into
-  `sh -c '…'` requires it — `\n`, `\t` and `\\` are YAML escapes, not shell ones, and a `\n` splits
-  the command where no shell ever sees it. Keep the command free of backslashes apart from `\"`, or
-  use a block scalar.
+  a **post-condition**, not just exit 0. The value is a YAML scalar before it is a shell command.
+  **Anything longer than one command uses a literal block scalar (`|`)** — in this project a gate is
+  normally a multi-line sandbox drive, and `|` carries heredocs unchanged and round-trips through
+  `next_phase.py`'s PyYAML cleanly. Reserve double-quoted style for a true one-liner, where `\n`,
+  `\t` and `\\` are YAML escapes rather than shell ones and a `\n` splits the command where no shell
+  ever sees it; keep such a gate free of backslashes apart from `\"`.
 - `review.cycle`: completed review passes, auto-incremented by every `set_phase.py --verdict`.
   `REVIEW.md`'s "Cycle {n}" mirrors it and the two-to-three-cycle bound is graded against it.
 
