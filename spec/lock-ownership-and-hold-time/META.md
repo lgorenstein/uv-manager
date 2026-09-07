@@ -146,7 +146,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F6 — §9 drops the qualifiers on the trampoline overwrite guard
-`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=open target=.agents/factory/invariants.md`
+`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=applied target=.agents/factory/invariants.md`
 - **What happened:** §9 says "Only marked files are ever overwritten or removed." Removal is
   marker-only; overwriting is not. The guard at `bin/uv-manager:491-496` is a three-way conjunction,
   so an unmarked file failing `-s` **or** `-x` is written over — a planted 0644 non-empty user file was

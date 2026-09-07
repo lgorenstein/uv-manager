@@ -225,8 +225,10 @@ are site or user policy.
 
 **Trampolines are generated over the union of names across all architectures**, so invoking a tool on
 an architecture where it is not installed reports that instead of `Exec format error`. Only files
-carrying `uvm_tramp_marker` are ever overwritten or removed; an unmarked, non-empty, executable file
-of the same name is somebody's own script and is left alone, with a note. `PATH` prepending is
+carrying `uvm_tramp_marker` are ever removed. Overwriting is narrower: a file is spared only when it
+is unmarked, non-empty and executable — somebody's own script, left alone with a note — so an unmarked
+file that is empty or non-executable is replaced. That the guard turns on `-x` at all is a gap rather
+than a decision; `issues/invariant-audit-gaps.md` carries it. `PATH` prepending is
 idempotent because the exported `PATH` is inherited by everything `uv` spawns.
 
 **Per-user, never shared.** State directories are created under `umask 077`.

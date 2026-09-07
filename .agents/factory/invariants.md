@@ -215,7 +215,11 @@ Only invoke the sections relevant to the change. Do not manufacture findings aga
 - Every trampoline we own is **rewritten**, never skipped on mere existence — one truncated by a purge
   or written by an older version has to be repaired.
 - A file that is non-empty, executable and **lacks `uvm_tramp_marker`** is somebody's own script that
-  happens to share the name. Leave it and say so. Only marked files are ever overwritten or removed.
+  happens to share the name. Leave it and say so. Removal is marker-only; overwriting is not. A file
+  is spared only when it is unmarked **and** non-empty **and** executable, so an unmarked file that is
+  empty or non-executable is written over. The `-s` term is deliberate — a trampoline truncated by a
+  purge is 0 bytes and unmarked, and the bullet above requires it be repaired. The `-x` term is a real
+  gap against the property `AGENTS.md` states, seeded in `issues/invariant-audit-gaps.md`.
 - Written to a temp name and `mv -f`'d into place, so a concurrent exec never sees a partial script.
 - The trampoline body is `/bin/sh`, not bash, and re-resolves the architecture at exec time.
 
