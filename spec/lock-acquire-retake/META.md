@@ -55,7 +55,7 @@ Harness self-improvement notes for this cycle. Records only; `/uvm-harness` appl
 - **Confidence:** high · **Effort:** small
 
 ## F4 — the debate variant gives both reviewers one scratchpad, and their fixtures collide
-`origin=uvm-review:step-2 severity=high category=instruction status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-2 severity=high category=instruction status=applied target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** the two reviewers were launched with the same scratchpad path and both built a
   `mkdir` PATH shim there. One reported that the other's shim overwrote its own mid-pass and re-ran
   its whole set in an isolated subtree; the other reported HEAD failure rates its instrumented

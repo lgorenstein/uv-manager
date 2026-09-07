@@ -150,7 +150,11 @@ Launch a fresh `general-purpose` reviewer via `Agent`. Give it, inline, **only**
   (every R-ID: implemented? verified how? or explicitly taken on trust) and any unmapped changes.
 
 `debate`: launch **two** independent reviewers — one instructed to argue "ship", one "block" — and
-reconcile their findings.
+reconcile their findings. Give each its **own scratchpad subdirectory**, named in its prompt. Two
+reviewers on one path both write a `mkdir` shim, a staged baseline binary or a planted lock under the
+same name, and the second overwrites the first mid-drive; neither can see it from inside, and the
+measurements still complete looking like evidence. The variant's claim is two independent
+measurements, which is exactly what shared mutable fixtures destroy.
 
 ### Step 3 — Collect, sanity-check, and report
 Read the reviewer's returned findings. Confirm the reviewer left the tree clean
