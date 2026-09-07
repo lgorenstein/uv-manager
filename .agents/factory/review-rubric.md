@@ -156,3 +156,11 @@ staleness check, and never asks whether a gate fired.
 For a diff touching a high-blast-radius region, run **two** independent fresh reviewers — one
 instructed to argue "ship", one to argue "block" — and reconcile. Independent instances beat
 single-model introspection. Reserve it for genuinely high-risk changes; it costs twice as much.
+
+Read the *shape* of the two results, not only their union. Overlap is a confidence signal about the
+findings — both stances reached the same defect. Disjointness is a coverage signal about the pass:
+two walks over one function intersecting nowhere is evidence a third defect exists, and the union is
+not to be presented as complete. Contradiction — one reviewer's CONFIRMED against the other's clean
+pass on the same code — is a claim about reproducibility, and the orchestrator settles it by
+measuring, with a control proving the construction reaches the state at all before a clean result is
+read as absence. Record which of the three occurred in `REVIEW.md`'s reconciliation note.

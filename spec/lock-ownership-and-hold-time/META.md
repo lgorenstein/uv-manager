@@ -402,7 +402,7 @@ appending a remediation phase, put the fix and its regression drives in the file
 that produced the defect — where the next reader meets them together.
 
 ## F19 — the debate variant assumes the two reviewers overlap, and says nothing about disjoint results
-`origin=uvm-review:step-3 severity=medium category=missing-guidance status=open target=.agents/factory/review-rubric.md`
+`origin=uvm-review:step-3 severity=medium category=missing-guidance status=applied target=.agents/factory/review-rubric.md`
 - **What happened:** cycle 2's two reviewers returned two CONFIRMED defects in one function and
   neither found the other's. The rubric's instruction is to "reconcile" their findings, which
   presumes the sets overlap and the work is arbitrating severity or disposition — what cycle 1 did,
