@@ -187,6 +187,12 @@ Entries carry no numbers, so removing one renumbers nothing. What still breaks i
   table, a file inventory. A stale baseline in a seed whose own acceptance criterion is a line-count
   guard is the one number in it that has to be right.
 
+Reach for `--all` rather than waiting to be asked. `git diff --stat {merge-base}..main -- bin/uv-manager`
+is cheap and already to hand; when the landed cycle moved the file materially, recommend it in the
+Step 4 preview and say why. Citations rot wherever the shipped cycle moved code, and file overlap with
+this retirement is uncorrelated with where they rotted — the seeds this sweep never opens are exactly
+the ones carrying stale line numbers.
+
 Do not rewrite a `Found by:` line. Those ordinals are provenance, not queue position.
 
 ### Step 6 — Commit

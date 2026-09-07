@@ -548,7 +548,7 @@ review rather than by a committed harness. Cycle 2's two passes shared no findin
 three, and disagreed only on disposition, which is the signal the variant exists to produce.
 
 ## F26 — Step 5's drift sweep is scoped to incidental file overlap, and `--all` has no trigger
-`origin=uvm-roadmap:step-5 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-roadmap/SKILL.md`
+`origin=uvm-roadmap:step-5 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-roadmap/SKILL.md`
 - **What happened:** retiring this cycle's seed surfaced a stale citation in
   `issues/purge-tree-repair.md` — `bin/uv-manager:806-831`, where line 806 is now a bare `#`, because
   the landed cycle grew the file from ~1000 to 1202 lines. It was caught only because the retirement
