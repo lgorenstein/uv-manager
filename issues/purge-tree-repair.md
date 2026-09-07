@@ -12,7 +12,7 @@ lane: public
 A scratch purge is per-file on access time, so it removes a tool environment piecemeal while uv still
 records it as installed. uv performs no integrity check on an environment it believes is present; it
 execs a half-deleted venv and the user gets an `ImportError`. `uvm_doctor` finds this and prints
-commands for a human (`bin/uv-manager:1046-1071`). Nobody reads that from a compute node at 03:00, and
+commands for a human (`bin/uv-manager:1068-1093`). Nobody reads that from a compute node at 03:00, and
 automation cannot act on it.
 
 The requirement, in the maintainer's words: put `uv run ...` in a script that launches an application

@@ -30,7 +30,7 @@ pre-planted dead-holder lock and bursts of 32 to 64 concurrent ranks:
 
 **A partial narrowing already shipped** in `lock-ownership-and-hold-time` P8. The break now re-reads
 `owner` immediately before acting and removes the file *and* the directory only while it still holds
-the line the forfeiture was decided on (`bin/uv-manager:412-424`). Gating the `owner` removal is what
+the line the forfeiture was decided on (`bin/uv-manager:456-461`). Gating the `owner` removal is what
 arms `rmdir`'s refusal of a non-empty directory as the second half of the same guard. It is a strict
 narrowing — a declined break falls through to the timeout accounting and the next iteration
 re-decides — but it is **not a closure**, and it was shipped on that basis rather than on evidence
@@ -45,8 +45,8 @@ or one caught inside the acquire window."
 
 **The owner-present case is narrowed, not closed** — which an earlier draft of this section implied
 it was, and which would have let a future cycle close the vacuous case and call the defect done. The
-window is the interval between the re-read at `bin/uv-manager:423` and the `rm -f`/`rmdir` at
-`:425-426`, and passing the identity test is exactly what licenses this process to delete a *new*
+window is the interval between the re-read at `bin/uv-manager:457` and the `rm -f`/`rmdir` at
+`:459-460`, and passing the identity test is exactly what licenses this process to delete a *new*
 winner's `owner` and so clear the way for its own `rmdir`. Review cycle 3 measured a dead-holder
 plant *carrying* an owner at 9 of 29 concurrent installer entries and 4 robbed winners of 1280 ranks,
 against 41 of 61 for the owner-less plant. The vacuous case is roughly 4.5x hotter; it is not the
@@ -88,7 +88,7 @@ enough to accept or reject a candidate fix.** That debt is the first work here, 
   established the arithmetic for sizing a statistical gate (`1 - (1-p)^n` per burst, compounded);
   nothing applied it here.
 - **Two signals are conflated.** "Two ranks in the installer" may be this defect or the pre-existing
-  early-out at `bin/uv-manager:547`, where `uvm_acquire_lock … || return 0` returns before
+  early-out at `bin/uv-manager:570`, where `uvm_acquire_lock … || return 0` returns before
   `uvm_point_current`. A prior review logged that separately as real, pre-existing and
   self-correcting. Until the two have separate assertions, a red gate cannot name what it caught,
   which is the failure mode `spec/lock-ownership-and-hold-time/META.md` F18 already records.
@@ -104,10 +104,10 @@ that outlives the sandbox. It does **not** reach **R3**.
 R3's question was a property of one code path given one filesystem state — `mkdir` returned 0 and
 `${lock}` is absent at the owner write — which is directly constructible in one process, with no
 burst, so a candidate for it is graded pass/fail rather than against noise. **R3 has therefore left
-this seed**, taking its gate with it. It is
-[`issues/lock-acquire-retake.md`](lock-acquire-retake.md), which carries the working `mkdir` PATH
-shim, its EACCES companion, the `set -euo pipefail` landmine that a stderr cleanup walks into, and
-the counter-preservation gates the remedy owes.
+this seed**, taking its gate with it. It became `lock-acquire-retake`, which has since shipped;
+[`spec/lock-acquire-retake/GOAL.md`](../spec/lock-acquire-retake/GOAL.md) is the retained account and
+carries the `mkdir` PATH shim, its EACCES companion, the `set -euo pipefail` landmine that a stderr
+cleanup walks into, and the counter-preservation gates the remedy owed.
 
 What remains here — R1 and R2 — is the rate question, and the debt above is undischarged for it.
 
@@ -174,8 +174,9 @@ remedy is a restructure of the acquire loop rather than the local edit cycle 2 s
 function's failure history is collateral rather than missed targets — so it wants a real review
 behind it more than it wants to be rushed into an exhausted loop.
 
-**R3 has since been split into its own seed** — [`issues/lock-acquire-retake.md`](lock-acquire-retake.md),
-`small`, taken ahead of R1 and R2 rather than behind them. It left rather than being promoted from
+**R3 has since been split into its own seed** — `lock-acquire-retake`, `small`, taken ahead of R1 and
+R2 rather than behind them, and landed on `main`; see
+[`spec/lock-acquire-retake/`](../spec/lock-acquire-retake/GOAL.md). It left rather than being promoted from
 here because promotion sets `status: adopted:{slug}` on the whole file: R1 and R2 would have read as
 adopted while nobody worked them, `/uvm-feature` would have refused them later as a collision, and
 `/uvm-roadmap` would have had to catch them as a remainder to avoid deleting their evidence. One
@@ -201,12 +202,12 @@ Draft R-IDs, to be firmed up at promotion.
 - **R2** — WHEN a waiter's forfeiture decision names an instance that no longer exists, the wrapper
   SHALL NOT remove whatever occupies that path, **including** when the judged lock carried no `owner`
   file.
-- **R3** — *Moved out* to [`issues/lock-acquire-retake.md`](lock-acquire-retake.md) on 2026-08-26,
-  where it is that seed's R1. The number is left vacant rather than closed up: `REVIEW.md`, the
+- **R3** — *Moved out* to `lock-acquire-retake` on 2026-08-26, where it was that cycle's R1 and has
+  since shipped ([`spec/lock-acquire-retake/`](../spec/lock-acquire-retake/GOAL.md)). The number is left vacant rather than closed up: `REVIEW.md`, the
   `ROADMAP.md` entry and the 0.6.0 human-gate clearance all cite "the seed's R3", and renumbering
   R4–R7 would falsify every one of them.
 - **R4** — The two-installer signal SHALL be attributed: either to this defect, or to the early-out
-  at `bin/uv-manager:547`, with a drive that distinguishes them.
+  at `bin/uv-manager:570`, with a drive that distinguishes them.
 - **R5** — IF `ps -o lstart=` cannot answer on the running platform, THEN the wrapper SHALL say so
   somewhere an operator will see it, rather than silently reverting to a leash that cannot survive
   pid reuse.

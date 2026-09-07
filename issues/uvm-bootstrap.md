@@ -28,7 +28,7 @@ in writing; one that puts nothing on `PATH` is useless to the person who ran it.
 tension is the substance of this cycle, not an implementation detail of it.
 
 An up-to-date check has a source of truth to work from: the version is single-sourced at
-`bin/uv-manager:21` and `uvm --version` prints it (`:795`).
+`bin/uv-manager:21` and `uvm --version` prints it (`:1157`).
 
 ## Why it was deferred
 

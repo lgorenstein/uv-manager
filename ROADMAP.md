@@ -17,31 +17,9 @@ See `AGENTS.md` for why.
 
 ## Queued
 
-### A rank robbed of its fresh lock dies instead of retaking it
-**Seed:** [`issues/lock-acquire-retake.md`](issues/lock-acquire-retake.md) · `fix` · appetite small ·
-**adopted** as [`spec/lock-acquire-retake/`](spec/lock-acquire-retake/GOAL.md)
-
-In flight. Shipped in 0.6.0 as a known defect by recorded maintainer override: the owner write became
-fatal — correctly — but a rank whose fresh lock directory is deleted by a losing stale-breaker hits
-the same `die` and exits 1 with empty stdout, where the pre-0.6.0 wrapper continued. Matched A/B: zero
-robbed winners before, 4 of 1280 after against a planted abandoned lock, 0 of 2304 on the ordinary
-cold-start path.
-
-Shaping settled six criteria and two open questions. Appetite stays **small** — it governs research
-depth, not care, and the shape is already settled with a deterministic red gate in hand; the
-collateral risk that sank the last three remediations to this function is answered instead by making
-counter-preservation a graded criterion (R4) rather than plan-level detail. A successful retake is
-**silent** (R5), matching the existing absent-lock retry, accepting knowingly that a site then gets no
-signal the underlying race is firing. Whether the retake shares the `absent` counter is left to
-`/uvm-plan`; R3 constrains only the observable bound and the timeout accounting.
-
-Not merged with `lock-break-instance-identity`: closing the race would make this cycle's gate
-unreachable. The committed regression test is deferred to `test-harness` R3e, landed there at
-shaping.
-
 ### The break still deletes locks it did not judge, and nothing here can measure it yet
 **Seed:** [`issues/lock-break-instance-identity.md`](issues/lock-break-instance-identity.md) · `fix` ·
-appetite big — **R3 split out to `lock-acquire-retake`, taken first**
+appetite big — **R3 split out to `lock-acquire-retake`, which has since shipped**
 
 What `lock-ownership-and-hold-time` narrowed but did not close. A forfeiture decided from an `owner`
 line read a second ago is acted on against a path, and a path is not an instance, so a losing breaker
@@ -51,8 +29,9 @@ obvious fix and is wrong twice over: `mv -T` does not exist at the portability f
 instead of failing, and `rmdir` refusing a non-empty directory turned out to be the thing protecting
 established locks.
 
-Its R3 — the robbed winner's death — left for `lock-acquire-retake` above, needing none of the
-measurement debt the rest of this seed blocks on.
+Its R3 — the robbed winner's death — went to `lock-acquire-retake`, which needed none of the
+measurement debt the rest of this seed blocks on and landed on `main`. What that cycle narrowed but
+did not close is the entry below.
 
 R1 and R2 stay behind measurement — 320 ranks gave 5 robbed winners against 2, which is noise — so
 the harness comes first and the fix follows it. Carries the lock's unmeasured performance claims and
@@ -91,8 +70,8 @@ no budget removes, since a deleted distribution and every managed interpreter le
 the criteria must name what is caught and concede the rest. Cost is handled by a verification receipt
 rather than an integrity stamp. The detector it reads shipped in 0.5.0, and the lock's ownership and
 hold-time fix landed with it, so the concurrency bug this cycle would otherwise have inherited is
-gone. What remains above it are the two lock cycles — `lock-acquire-retake` and
-`lock-break-instance-identity` — whose residual this cycle is what makes common.
+gone. What remains above it are the two lock cycles — `lock-break-instance-identity` and
+`lock-owner-write-errno` — whose residual this cycle is what makes common.
 
 ### Three small code gaps behind inaccurate invariants
 **Seed:** [`issues/invariant-audit-gaps.md`](issues/invariant-audit-gaps.md) · `fix` · appetite small
