@@ -130,7 +130,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F5 — §6 generalizes one failure path's message to "any failure"
-`origin=uvm-plan:step-5 severity=low category=inaccurate-guidance status=open target=.agents/factory/invariants.md`
+`origin=uvm-plan:step-5 severity=low category=inaccurate-guidance status=applied target=.agents/factory/invariants.md`
 - **What happened:** §6's last bullet reads "On any failure, remove the staging directory, release the
   lock, and die with the pre-warm instructions." Measured: the installer-pipeline guard
   (`bin/uv-manager:341-349`) carries the pre-warm text; the version read-back guard (`:351-355`)

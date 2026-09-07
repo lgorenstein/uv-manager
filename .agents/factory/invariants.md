@@ -170,8 +170,12 @@ Only invoke the sections relevant to the change. Do not manufacture findings aga
   that §2 intercepts.
 - Install into a `mktemp -d` staging directory inside `versions/`, then **rename** into place. A
   rename within the same directory is atomic; a partial tree at a version path is not recoverable.
-- On any failure, remove the staging directory, release the lock, and die with the pre-warm
-  instructions.
+- Every failure removes the staging directory and releases the lock, but the advice is per path and
+  the paths differ. A dead installer pipeline gets the pre-warm instructions; a version read-back that
+  will not run gets the wrong-architecture message and deliberately no pre-warm, which would send the
+  user to repeat a download that already succeeded. The rename into place is guarded by nothing and
+  dies under `set -e`, leaving a `.incoming.` directory behind — code work, seeded in
+  `issues/invariant-audit-gaps.md`.
 
 ## 7. Output discipline
 
