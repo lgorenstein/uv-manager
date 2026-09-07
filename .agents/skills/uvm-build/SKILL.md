@@ -148,6 +148,13 @@ shell and executed later by `lint.sh`, by CI, and by anyone reading `TECH.md` un
 aliases, shell functions and GNU-versus-BSD utilities all diverge — a `grep` that is a shell function
 here is `/usr/bin/grep` there. A gate never observed failing is not a gate.
 
+A phase that adds a constraint — a refusal, a guard, anything that narrows legal inputs — invalidates
+gate *setups* elsewhere, and not only when a review sent you back. Re-run the `verify:` of every other
+phase, `done` and `pending` alike: a red `done` gate is invisible to the FSM and ships green, and a
+`pending` gate may have been written against inputs the constraint has since made illegal. The two
+outcomes differ — a gate whose *setup* the constraint outlawed is retuned and its phase stays `done`;
+a gate whose *assertion* the change broke reopens the phase.
+
 Green → proceed. A red you can name the correction for is the inner loop of implementation: make the
 fix, re-run, and record what it took in the commit body, not as an attempt — the counter catches a
 phase that will not converge, and one converging exactly as planned would trip it in three reds. A

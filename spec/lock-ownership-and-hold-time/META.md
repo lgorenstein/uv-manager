@@ -196,7 +196,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F9 — the "re-run predecessor gates" rule exists only in remediation mode · seen again
-`origin=uvm-build:P4 severity=high category=missing-guidance status=open target=.claude/skills/uvm-build/SKILL.md`
+`origin=uvm-build:P4 severity=high category=missing-guidance status=applied target=.claude/skills/uvm-build/SKILL.md`
 - **What happened:** P4's new ordering guard refuses `UVM_LOCK_TIMEOUT >= UVM_LOCK_STALE`. P3's
   already-`done` gate held a lock with `UVM_LOCK_STALE=10` against the default timeout of 180 — a
   pair P4 now refuses — so that gate went red the moment P4 landed. Nothing in the ordinary Steps 3–5
