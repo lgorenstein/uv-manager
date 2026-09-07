@@ -96,6 +96,11 @@ carrying `appetite: big` fans out like any other big change.
   named in `invariants.md` §3 or §7 prints is user-facing behavior, so capture the pre-change output as
   a `research/` baseline even when the fan-out is skipped.
 
+  Unlike the diagnostic exception above, the GOAL does not simply win here: this exception exists
+  because a human can under-scope an edit in this region. A GOAL that argues for less — an appetite, a
+  clarification, a criterion it says covers the risk — narrows the fan-out's breadth but does not
+  eliminate it. Run the narrowed fan-out and say in `PLAN.md` what it was narrowed to, and why.
+
   An explicit `skip research` argument stays a human override and still skips.
 
 - **`appetite: big`:** identify the *rabbit holes* — the unknowns that could blow the appetite. In this

@@ -22,7 +22,7 @@ Harness self-improvement notes for this cycle. Records only; `/uvm-harness` appl
 - **Confidence:** med · **Effort:** small
 
 ## F2 — two Step 3 rules both claim authority over the fan-out, with no stated precedence
-`origin=uvm-plan:step-3 severity=medium category=instruction status=open target=.claude/skills/uvm-plan/SKILL.md`
+`origin=uvm-plan:step-3 severity=medium category=instruction status=applied target=.claude/skills/uvm-plan/SKILL.md`
 - **What happened:** Step 3's *high blast radius* exception mandates the full fan-out "regardless of
   appetite" for any change to `uvm_acquire_lock`. This GOAL's Clarifications resolve the opposite in
   as many words: appetite stays `small` and the collateral risk is "answered by R4 being a graded
