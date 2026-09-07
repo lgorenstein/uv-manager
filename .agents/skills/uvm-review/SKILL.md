@@ -83,7 +83,8 @@ Additional instructions provided with the invocation: $ARGUMENTS
   (`uvm_acquire_lock`, `uvm_unlock`, `uvm_install`, `uvm_point_current`, `uvm_resolve_root`,
   `uvm_init`, `uvm_trampolines`, `uvm_export_env`, `uvm_set_paths`, the dispatch tail) or an
   architecture-partitioning, `exec`-semantics or installer-environment invariant (§1, §2, §6).
-- **Bounded loop:** at most two or three review↔build cycles; escalate on non-convergence.
+- **Bounded loop:** cycle 3 is the last that may set `changes-requested`. A verdict that would be
+  cycle 4's stops and hands the maintainer a ship / abandon / rescope choice instead.
 
 ## Procedure
 
@@ -234,7 +235,9 @@ the plan never contaminates the correctness verdict. Append its notes to `REVIEW
 ### Final report
 Verdict, CONFIRMED/PLAUSIBLE counts, human-gate status, R-ID coverage (including anything taken on
 trust), and the recommended next step — `/uvm-build` to remediate, or `/uvm-publish` when approved.
-Note the review cycle count; if it is the second or third cycle without convergence, escalate.
+Note the review cycle count. Cycle 3 is the last that may set `changes-requested`: at that verdict
+say so, and hand over the standing findings, the remediation delta and the ship / abandon / rescope
+choice rather than routing to `/uvm-build` for a fourth pass.
 
 ## Examples
 

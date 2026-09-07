@@ -525,7 +525,7 @@ counting two legitimate removals, which is the gate catching the gate.
 - **Confidence:** high · **Effort:** small
 
 ## F25 — the loop bound is ambiguous at exactly the cycle where it binds
-`origin=uvm-review:step-4 severity=medium category=missing-guidance status=open target=.agents/factory/review-rubric.md`
+`origin=uvm-review:step-4 severity=medium category=missing-guidance status=applied target=.agents/factory/review-rubric.md`
 - **What happened:** this is cycle 3 with a `changes-requested` verdict. "At most two or three
   review↔build cycles; escalate on non-convergence" does not say whether the escalation is owed
   *now*, whether a fourth build may proceed unreviewed, or whether a fourth review is the

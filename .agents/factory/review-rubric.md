@@ -131,9 +131,12 @@ forbidden to open, so a technique recorded there is rediscovered or walked into 
 - Clean pass → `review.verdict: approved`; proceed to `uvm-publish`.
 - Cycle 2+ **appends** a dated `## Review cycle {n}` section to `REVIEW.md` — never overwrite an
   earlier cycle; the file is the cumulative record.
-- **Bounded loop:** at most two or three review↔build cycles, graded against the durable
-  `review.cycle` counter in `TECH.md` (auto-incremented by every `set_phase.py --verdict`). On
-  non-convergence, STOP and escalate — self-correction does not reliably converge.
+- **Bounded loop:** cycle 3 is the last that may set `changes-requested`. A verdict that would be
+  cycle 4's stops instead and hands the maintainer the standing findings, the remediation delta since
+  the last approved commit, and an explicit ship / abandon / rescope choice. The bound is graded
+  against the durable `review.cycle` counter in `TECH.md`, auto-incremented by every
+  `set_phase.py --verdict`. Escalation is that handoff, not a note; self-correction does not reliably
+  converge.
 
 ## Mandatory human sign-off gate
 
