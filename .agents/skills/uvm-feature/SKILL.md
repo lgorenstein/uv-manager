@@ -149,7 +149,9 @@ draft R-IDs — and its body mirrors this template, so promotion is a move-and-f
 - **`shaped`** — the shaping conversation already happened with a human. Do **not** re-litigate it.
   Re-confirm the scope still holds against current `main`, cite anything that has drifted since it was
   written, surface that for sign-off, and adopt it largely as written. What this step performs is
-  *acceptance into a cycle*.
+  *acceptance into a cycle*. `shaped` does not mean fully settled: a seed may name decisions it
+  deliberately parked for promotion, and settling those with the human is this step's job.
+  Re-litigation is reopening what the seed decided, not answering what it left open.
 - **`adopted:{other-slug}`** — already promoted. STOP and report the collision. If
   `git ls-tree main -- spec/{other-slug}` is empty and no branch carries it, the adoption is stale from
   an abandoned cycle rather than a real collision: show the human and offer to reset the status instead.

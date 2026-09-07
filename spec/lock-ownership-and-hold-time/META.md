@@ -43,7 +43,7 @@
 <!-- Real findings are appended below this line by the lifecycle skills. -->
 
 ## F1 — a `shaped` seed can still carry decisions it deliberately left to promotion
-`origin=uvm-feature:step-4 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-feature/SKILL.md`
+`origin=uvm-feature:step-4 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-feature/SKILL.md`
 - **What happened:** the seed's `status:` was `shaped`, and Step 4's `shaped` branch says the shaping
   conversation "already happened with a human. Do **not** re-litigate it… adopt it largely as
   written." But the seed's own text carried two decisions it had explicitly parked for this step —
