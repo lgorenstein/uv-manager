@@ -20,7 +20,7 @@ allowed-tools: Read, Edit, Write, Grep, Glob, AskUserQuestion, Bash(uv run *), B
 
 Invoke `/uvm-release` to bump the version and cut a release — the concern `/uvm-publish` explicitly
 leaves out. It is an **operational sibling of `/uvm-harness`, not a lifecycle step**: it touches no
-`spec/`, no FSM, no `GOAL/PLAN/TECH/REVIEW`. It moves the version, the tag, and the published release.
+FSM and no `GOAL/PLAN/TECH/REVIEW`, and the only `spec/` file it writes is a cycle's `META.md`. It moves the version, the tag, and the published release.
 
 This is where **irreversible, outward** publishing happens. A tag can be deleted, but a tag that sites
 have already cloned cannot be recalled, and this repository is deployed by `git clone` into

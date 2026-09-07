@@ -236,7 +236,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F11 — three scope claims in the factory's own docs are now false
-`origin=harness-audit:scope-claims severity=medium category=instruction status=open target=.agents/factory/methodology.md`
+`origin=harness-audit:scope-claims severity=medium category=instruction status=applied target=.agents/factory/methodology.md`
 - **What happened:** commit `bced44f` gave the operational siblings somewhere to put a finding, and
   three sentences describing what those siblings touch were left asserting the old scope. All three
   are false against the current files: `methodology.md` — "None touches `spec/`, the FSM, or product

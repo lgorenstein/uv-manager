@@ -46,7 +46,9 @@ dated design record, not as a living source of truth that must be maintained for
 Three operational skills sit outside the lifecycle. **`/uvm-harness`** applies the factory's own
 self-improvement findings back to `.agents/`. **`/uvm-roadmap`** retires the seeds whose cycles have
 landed and repairs the drift that leaves in `ROADMAP.md`. **`/uvm-release`** bumps the single version
-source and cuts a signed, tagged release. None touches `spec/`, the FSM, or product requirements.
+source and cuts a signed, tagged release. None touches the FSM or product requirements. `/uvm-roadmap`
+and `/uvm-release` may append a finding to an existing `spec/{slug}/META.md` and nothing more;
+`/uvm-harness` writes none, which is what keeps the loop from recursing.
 
 ## Load-bearing principles
 

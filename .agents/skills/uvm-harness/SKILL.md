@@ -181,7 +181,10 @@ commits, verification results, and any ledger collisions surfaced.
 
 ## Notes
 
-- `uvm-harness` is the **only** skill that writes to `.agents/`. If a fix touches `AGENTS.md` or
+- `uvm-harness` is the only skill whose *purpose* is writing to `.agents/`, but not the only one that
+  does: `/uvm-roadmap` repairs `.agents/` references a retirement breaks, and a lifecycle build commit
+  edits `invariants.md` when it overturns an invariant, under `AGENTS.md`'s same-commit rule.
+  If a fix touches `AGENTS.md` or
   `invariants.md`, remember `AGENTS.md` is ground truth and `invariants.md` is kept in lockstep with
   it — change both coherently, and never loosen an invariant on a finding's say-so (Safety §3).
 - A finding recurring across several features (visible via `--all` and the ledger) is a strong signal.
