@@ -598,3 +598,27 @@ Read `origin`, `severity` and `category` from the finding in `META.md`; this led
   unspecified event. Carried into `uvm-review`'s Safety Principles and Final report in the same
   commit, both of which mirrored the old range and would otherwise contradict the rubric: the shape
   `cd995b4` recorded and `9228a75`/`f6748ef` were written to stop.
+
+## 2026-09-07 — lock-ownership-and-hold-time F4 + F14: the checklist was derived from prose, not from the code
+`decision=applied commit=cb046f4 target=.agents/factory/invariants.md`
+- **Rationale:** a bullet graded as auto-CRITICAL must first be true; the header now requires confirming an invariant holds on `main` before raising one, and makes a false claim a finding against this file. F14 rides here: its content half (§5's contention premise) already landed with that cycle's R7/P7 under the same-commit rule, and its surviving half is exactly this standing rule — this run did not re-fix §5.
+
+## 2026-09-07 — lock-ownership-and-hold-time F5: §6 generalized one failure path's message to all three
+`decision=applied commit=0de18eb target=.agents/factory/invariants.md`
+- **Rationale:** measured in `uvm_install`: the egress path carries the pre-warm text, the version read-back deliberately omits it (pre-warming would repeat a download that succeeded), and the rename is guarded by nothing. Names all three rather than quantifying the first over the rest; the unguarded rename stays code work in `issues/invariant-audit-gaps.md`.
+
+## 2026-09-07 — lock-ownership-and-hold-time F6: §9 dropped the qualifiers on the overwrite guard
+`decision=applied commit=38cf89b target=.agents/factory/invariants.md`
+- **Rationale:** the guard is a three-way conjunction, so an unmarked file failing `-s` or `-x` is written over; both files claimed removal-and-overwrite are marker-only. Two-file lockstep with `AGENTS.md`. Written to **name the `-x` gap** and point at the seed rather than quietly dropping the claim — stating a weaker truth plus the gap is a strengthening, so no Safety §3 override was needed.
+
+## 2026-09-07 — lock-ownership-and-hold-time F7: §11's rationale was disproved by uv's CLI
+`decision=applied commit=f3d6466 target=.agents/factory/invariants.md`
+- **Rationale:** both files asserted anything option-shaped can only follow the subcommand; `uv --cache-dir DIR tool dir` and `--python-preference` refute it on 0.12.4. Kept the real point — the list is not a `uv` CLI model — while naming the two missing entries as a gap. Same lockstep and same no-quiet-weakening shape as F6.
+
+## 2026-09-07 — lock-ownership-and-hold-time F9: the gate re-run rule lived only in remediation mode
+`decision=applied commit=f5e3d63 target=.agents/skills/uvm-build/SKILL.md`
+- **Rationale:** a forward build that adds a constraint invalidates predecessor gate *setups* by the same mechanism, and `next_phase.py` never re-runs a gate, so a red `done` phase ships green. Moved to Step 4 for both paths. **Went past the finding's own fix**, which said "every `done` phase" and would have missed the pending direction its own "seen again" note recorded; the applied text sweeps every phase and separates retune-and-stay-done from reopen.
+
+## 2026-09-07 — lock-ownership-and-hold-time F21: the re-run rule selected gates by depends_on
+`decision=applied commit=eda1e51 target=.agents/skills/uvm-build/SKILL.md`
+- **Rationale:** `depends_on` encodes build order, not assertion overlap; in a one-script repository every phase edits the same function, and following the letter re-ran one gate of six. Restated by surface — every `done` phase whose gate exercises a function the edit touched, normally all of them. Complements F9 above rather than duplicating it: F9 covers when to sweep, this covers what to sweep.
