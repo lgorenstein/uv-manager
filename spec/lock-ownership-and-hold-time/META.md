@@ -105,7 +105,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F4 — `invariants.md` was written from `AGENTS.md` prose, not from the functions it constrains
-`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=open target=.agents/factory/invariants.md`
+`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=applied target=.agents/factory/invariants.md`
 - **What happened:** an audit of all twelve sections against `bin/uv-manager` — ~126 claims, four
   sections, seven findings filed, three refuted by an adversarial pass — found **four** assertions
   measured false of the code. Three of them (§6, §9, §11, recorded below) are the same failure mode:
@@ -297,7 +297,7 @@
 - **Confidence:** high · **Effort:** medium
 
 ## F14 — `invariants.md` §5 states an unsound inference as doctrine
-`origin=harness-audit:invariant-premise severity=high category=instruction status=open target=.agents/factory/invariants.md`
+`origin=harness-audit:invariant-premise severity=high category=instruction status=applied target=.agents/factory/invariants.md`
 - **What happened:** §5's contention bullet reads "if the lock directory is absent after a failed
   `mkdir`, the failure is permissions/quota/ENOSPC and waiting will never help — die with that
   message." A holder releasing between `mkdir` returning `EEXIST` and the test evaluating makes a

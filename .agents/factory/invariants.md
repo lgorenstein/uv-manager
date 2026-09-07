@@ -10,6 +10,13 @@ consumers:
   project-conventions violation is HIGH, not auto-CRITICAL) and, when it touches a high-blast-radius
   region, forces a human sign-off gate.
 
+**Check a bullet against the code before grading against it.** Before raising an auto-CRITICAL for a
+§1–§11 violation, confirm the invariant holds on `main` in the neighbourhood being graded. A claim that
+does not is a finding against *this file*, recorded in `META.md`, not against the diff. A bullet added
+or edited here names the function it constrains and is checked against that function, never against
+`AGENTS.md`'s prose — every inaccuracy found so far came from compressing that prose one hop further
+from the code.
+
 Only invoke the sections relevant to the change. Do not manufacture findings against untouched code.
 
 ## High-blast-radius regions (any CONFIRMED finding here → mandatory human gate)
