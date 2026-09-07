@@ -467,7 +467,7 @@ on the record instead of a default nobody examined.
 - **Confidence:** high · **Effort:** small
 
 ## F22 — nothing makes a new primitive meet the portability floor before it is designed
-`origin=uvm-build:step-2 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-build/SKILL.md`
+`origin=uvm-build:step-2 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-build/SKILL.md`
 - **What happened:** P8's design turned on `rename(2)` being atomic and exclusive. That is true of
   the syscall and irrelevant to this script, which can only call `mv`, and `mv -T` does not exist at
   the portability floor. `AGENTS.md` § *Portability floor* and `invariants.md` §10 both say so, and

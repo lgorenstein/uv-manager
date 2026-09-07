@@ -133,6 +133,12 @@ after any non-trivial edit is nearly free and catches the class of error that a 
 at the worst possible moment. If implementation reveals a real correction to `TECH.md`/`PLAN.md`, amend
 `TECH.md` per Step 5. If it reveals a `GOAL.md` contradiction, STOP and escalate.
 
+When a phase introduces a shell primitive the script does not already use, check it against
+`invariants.md` §10 and grep `bin/uv-manager` for an existing use *before* designing around it. One
+grep: the floor forbids what the syscall underneath happily provides — `rename(2)` is atomic and
+exclusive, `mv -T` does not exist at the floor — and `uvm_point_current` already carries the
+documented fallback that says so.
+
 ### Step 4 — Verify gate
 Run the phase's `verify:` command, plus any additional drive the change warrants. "Green" means **the
 asserted post-condition held** — the observed tree, symlink target, exit code or stderr line is
