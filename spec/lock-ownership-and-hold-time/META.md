@@ -257,7 +257,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F12 — `/uvm-harness` has never said no, and no step asks it to
-`origin=harness-audit:ratchet severity=medium category=missing-guidance status=open target=.agents/skills/uvm-harness/SKILL.md`
+`origin=harness-audit:ratchet severity=medium category=missing-guidance status=applied target=.agents/skills/uvm-harness/SKILL.md`
 - **What happened:** measured across all 89 commits on `main`: **zero** net-negative `.agents/`
   commits, no file under `.agents/` has ever shrunk, and excluding the append-only ledger the totals
   are **4287 lines added against 151 deleted**. The ledger records **53 applied, 1 deferred, 0

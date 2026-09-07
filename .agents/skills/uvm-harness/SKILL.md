@@ -118,6 +118,13 @@ target · one-line title) with your **recommendation per finding**: `apply` with
 Use `AskUserQuestion` to confirm the set and direction. The human shapes intent; you propose the
 design.
 
+Every run records either a rejection or a deletion candidate, and says plainly when it found neither.
+Measured across the factory's history: 4429 lines added under `.agents/` against 174 deleted, and 63
+applied against **0** rejected. A 98% apply rate is not a filter, and Safety §6's branch for a fix that
+repeats a previously-rejected one has never been written to. Ask what should come *out* — a rule
+another has overtaken, a paragraph whose precondition expired, guidance duplicated across two files —
+and treat "nothing this run" as an answer owed rather than a silence.
+
 ### Step 4 — Preview the concrete diff per finding
 For each finding to apply, **re-derive** the edit against the current `target` — do not trust a stored
 line number. Produce the exact change (skill prose, template, script, or doc) and show it as a
