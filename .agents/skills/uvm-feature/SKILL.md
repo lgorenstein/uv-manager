@@ -133,7 +133,10 @@ disambiguate, structure, and add R-IDs, appetite and non-goals. Do not expand sc
 
 **For `kind: fix`, phrase criteria as the observable broken→fixed behavior the user sees** — never the
 suspected cause or mechanism, which is unverified until `/uvm-plan` root-causes it. A criterion pinned
-to a wrong diagnosis has to be reinterpreted mid-lifecycle.
+to a wrong diagnosis has to be reinterpreted mid-lifecycle. A WHEN clause naming the state that
+triggers the behavior is not a diagnosis, and neither is a *Checked by* clause whose gate constructs
+that state. Where a cycle is promoted from a landed `REVIEW.md` that already measured the mechanism,
+the gate is where the measurement belongs — the criterion still reads as behavior.
 
 **Promoting an issue.** A deferral recorded earlier arrives pre-shaped — Problem, why it was deferred,
 draft R-IDs — and its body mirrors this template, so promotion is a move-and-fill. It is still a

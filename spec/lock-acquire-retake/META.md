@@ -5,7 +5,7 @@ Harness self-improvement notes for this cycle. Records only; `/uvm-harness` appl
 ## Friction findings
 
 ## F1 — the fix-criteria rule is absolute but its rationale is conditional
-`origin=uvm-feature:step-4 severity=low category=instruction status=open target=.claude/skills/uvm-feature/SKILL.md`
+`origin=uvm-feature:step-4 severity=low category=instruction status=applied target=.claude/skills/uvm-feature/SKILL.md`
 - **What happened:** Step 4 says for `kind: fix`, phrase criteria as observable broken→fixed behavior
   "never the suspected cause or mechanism, which is unverified until `/uvm-plan` root-causes it."
   This cycle was promoted from a *completed* review that had already root-caused the defect with a
