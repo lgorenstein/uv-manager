@@ -239,10 +239,12 @@ that reason). The script parses under bash 3.2 (macOS) as well as the bash 4/5 f
 images. Generated trampolines are `/bin/sh`, not bash.
 
 **The global-option list in `uvm_global_takes_value` is deliberately short.** It exists only to find
-the first positional argument so `self update`, `tool` and `python` can be recognized. `uv`'s global
-options that take a separate value are those five; everything else that looks like one is a
-per-command option and can only appear after the subcommand, where the parser has already stopped.
-A longer list is not more careful — it is more surface to drift out of date.
+the first positional argument so `self update`, `tool` and `python` can be recognized — not to model
+`uv`'s CLI. The list is not complete: `uv 0.12.4` also accepts `--cache-dir` and `--python-preference`
+before the subcommand with a separate value, and both are missing, which
+`issues/invariant-audit-gaps.md` carries. Length is still not the goal — every entry is more surface to
+drift out of date — but the entries that are there have to be right, and a short list is not evidence
+that anything option-shaped must follow the subcommand.
 
 ## High-risk regions
 

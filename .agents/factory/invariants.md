@@ -236,10 +236,13 @@ Only invoke the sections relevant to the change. Do not manufacture findings aga
 
 ## 11. Argument inspection
 
-- `uvm_global_takes_value` lists exactly the five `uv` **global** options that take a separate value.
-  Everything else that looks like one is a per-command option and can only appear after the
-  subcommand, where the parser has already stopped. A longer list is not more careful — it is more
-  surface to drift out of date and more arguments to mis-skip.
+- `uvm_global_takes_value` lists `uv` **global** options that take a separate value, as `uv --help`
+  groups them. It exists only to skip values while finding the first positional argument; it is not a
+  model of `uv`'s CLI. It is also not complete: `uv 0.12.4` accepts `--cache-dir` and
+  `--python-preference` before the subcommand with a separate value and neither is listed, seeded in
+  `issues/invariant-audit-gaps.md`. Length is still not the goal — every entry is more surface to
+  drift and more arguments to mis-skip — but do not read the list's shortness as proof that anything
+  option-shaped must follow the subcommand.
 - `shift 2` is all-or-nothing in bash: with one argument left it shifts nothing and returns non-zero.
   Guard on the count (`(( $# >= 2 ))`) or a trailing value-taking flag spins the loop forever.
 - The parser recognizes only `self update`, `tool` and `python`. Everything else passes through

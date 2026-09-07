@@ -161,7 +161,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F7 — §11's rationale is disproved by `uv`'s actual CLI
-`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=open target=.agents/factory/invariants.md`
+`origin=uvm-plan:step-5 severity=medium category=inaccurate-guidance status=applied target=.agents/factory/invariants.md`
 - **What happened:** §11 asserts the five entries in `uvm_global_takes_value` are complete and that
   "everything else that looks like one is a per-command option and can only appear after the
   subcommand". Measured against `uv 0.12.4`: `uv --cache-dir DIR tool dir` and
