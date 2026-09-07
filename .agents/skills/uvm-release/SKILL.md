@@ -58,14 +58,11 @@ self-contradictory or ambiguous, STOP and ask.
 - **Version** (second positional, required — **never inferred or auto-bumped**; a published string is
   too consequential to guess). Validate: SemVer-shaped, **no `v` prefix** (it must match the string
   assigned to `uvm_version`), strictly greater than the latest existing tag, and not already a tag.
+  Bare `X.Y.Z` with no prefix is what makes `git tag -l` and `uv-manager --version` read the same.
   **Mode consistency:** `pre-release` REQUIRES a suffix (`X.Y.Za1`, `X.Y.Zrc1`); `release` REQUIRES a
   final version with no suffix. Any mismatch → STOP.
 - **Flags:** `--skip-dry-run` opts out of Step 2. It must be explicit, and it is discouraged.
 - Anything unrecognized → STOP and ask.
-
-**Tag convention.** There are no tags yet, so the first run establishes it: bare `X.Y.Z`, matching the
-`uvm_version` string exactly, so `git tag -l` and `uv-manager --version` read the same. Once tags
-exist, follow whatever the existing ones do rather than this paragraph.
 
 ## Safety Principles
 

@@ -220,7 +220,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F10 — `uvm-release`'s tag-convention paragraph cancelled itself after the first release
-`origin=harness-audit:release-skill severity=medium category=instruction status=open target=.agents/skills/uvm-release/SKILL.md`
+`origin=harness-audit:release-skill severity=medium category=instruction status=applied target=.agents/skills/uvm-release/SKILL.md`
 - **What happened:** the *Tag convention* paragraph in Argument Parsing opens "There are no tags yet,
   so the first run establishes it" and closes "Once tags exist, follow whatever the existing ones do
   rather than this paragraph." `git tag -l` returns `0.3.0 0.4.0 0.4.1 0.5.0`. The condition failed
