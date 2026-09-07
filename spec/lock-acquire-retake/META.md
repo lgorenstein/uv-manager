@@ -39,7 +39,7 @@ Harness self-improvement notes for this cycle. Records only; `/uvm-harness` appl
 - **Confidence:** high · **Effort:** small
 
 ## F3 — "a gate that exits 0 today is inert" has no case for a collateral criterion
-`origin=uvm-plan:step-6 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-plan/SKILL.md`
+`origin=uvm-plan:step-6 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-plan/SKILL.md`
 - **What happened:** Step 6 requires every `verify:` to be run against the current tree and treats
   exit 0 there as evidence the gate is inert. R4 and R6 here are *collateral* criteria — they demand
   that behavior not change, so their drives are green before and after by construction. Following the

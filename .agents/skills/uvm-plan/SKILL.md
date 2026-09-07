@@ -178,7 +178,11 @@ no command can decide — is inspection-only so `/uvm-review` reads it rather th
 
 Then run every `verify:` against the current tree before committing the plan. A gate asserting a
 post-condition the phase has not yet delivered must exit **non-zero**; one that exits 0 here is inert
-until proven otherwise, and will still be inert when `/uvm-build` reads its green as done. The failure
+until proven otherwise, and will still be inert when `/uvm-build` reads its green as done. A
+*regression* gate inverts this and is legitimate: a criterion demanding that behavior not change is
+green before and after by construction, and contorting it into a red destroys what it measures. Such a
+gate is exempt from the red requirement; its phase is not. A phase carrying only regression gates owes
+at least one post-condition that is red today, or nothing about it is falsifiable. The failure
 that motivates this is silent: a census gate whose pathspec is interpolated from a variable searches
 one nonexistent path under `zsh`, which does not word-split, and reports a clean tree with thirteen
 hits in it. Write the paths literally. A prose anchor fails the same way: `git grep` matches within
