@@ -144,6 +144,11 @@ with a §1–§11 invariant.
 Copy the template. Author phases as **vertical slices, not horizontal layers** — each independently
 verifiable end to end, ordered core-and-novel first.
 
+With the phases drafted, re-read § *Invariant gate* against every checklist item and ask of each gate
+bullet: which phase would violate this? The gate is written in one pass and the checklists in another,
+and nothing otherwise reconciles them, so an item landing on the wrong side of a constraint the same
+document just asserted reaches `/uvm-build` unchallenged.
+
 **Size circuit-breaker (soft):** if the roadmap needs more than about six phases for a single 850-line
 script, the scope is probably too big — pause and reconsider with the human before committing a
 mega-plan.

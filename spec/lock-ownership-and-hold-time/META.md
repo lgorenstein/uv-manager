@@ -179,7 +179,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F8 — `/uvm-plan`'s invariant gate is not cross-checked against its own phase checklists
-`origin=uvm-build:P3 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-plan/SKILL.md`
+`origin=uvm-build:P3 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-plan/SKILL.md`
 - **What happened:** P3's checklist said to derive `lock_beat=$(( lock_stale / 10 ))` "beside the
   existing knobs" — at load time. Measured on bash 3.2.57, `UVM_LOCK_STALE=abc` makes that arithmetic
   fatal under `set -u`, so at load it kills `uvm help` and `uvm --version`. `PLAN.md` §3 rules that
