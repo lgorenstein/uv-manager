@@ -195,6 +195,10 @@ light second-pass sanity check, dropping anything not backed by cited evidence. 
   exception — pre-existing behavior a criterion requires preserving — is deferred rather than
   blocked: take the clean route above, and stage the seed and its `ROADMAP.md` entry with the review
   artifacts so `uvm-publish`'s staleness gate does not read them as post-review drift.
+  A later cycle that measures those conditions **false** for part of an already-deferred finding
+  reports that part under a new id, records the correction against the *disposition* rather than
+  against the finding, and routes the keep-or-reopen question to the human as a gate item. A deferral
+  cleared by a human is not the agent's to reopen on its own reading.
 - **PLAUSIBLE only:** surface to the human for triage; do not auto-block.
 
 Every `--verdict` call auto-increments the durable `review.cycle` counter in `TECH.md`. Do not manage

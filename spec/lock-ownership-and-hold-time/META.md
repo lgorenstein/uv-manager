@@ -506,7 +506,7 @@ drive that would have passed by luck — and the first version of that census fa
 counting two legitimate removals, which is the gate catching the gate.
 
 ## F24 — nothing says what a later cycle does when it undercuts an earlier cycle's *deferral*
-`origin=uvm-review:step-3 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-3 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** cycle 3's matched A/B showed that half of cycle 2's F7 — the robbed winner's
   death — does not predate the diff, which is the premise the maintainer's 2026-08-16 deferral of F7
   rested on. The skill's only correction machinery is `### Correction to cycle {n}`, scoped to "a
