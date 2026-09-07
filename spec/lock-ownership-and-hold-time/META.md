@@ -447,7 +447,7 @@ the reason a scoped pass was the weaker option on this diff, meant the graded su
 on the record instead of a default nobody examined.
 
 ## F21 — the remediation re-run rule follows `depends_on`, which is not what a shared-file edit invalidates
-`origin=uvm-build:step-1 severity=medium category=instruction status=open target=.claude/skills/uvm-build/SKILL.md`
+`origin=uvm-build:step-1 severity=medium category=instruction status=applied target=.claude/skills/uvm-build/SKILL.md`
 - **What happened:** Step 1.3 says to re-run "the `verify:` of every `done` phase that lists the
   reopened phase in `depends_on`". Reopening P3 makes that P4 alone — P5 lists P4, P6 lists P5, and
   P1 and P2 list nothing. Yet the F6 fix edits `uvm_acquire_lock` and the heartbeat, which P1, P2,

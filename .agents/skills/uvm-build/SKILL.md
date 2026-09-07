@@ -112,7 +112,10 @@ Steps 1–2, then report the plan that *would* run and stop — no edits, no com
    R-ID rather than just the plan, STOP and escalate instead.
 
    A remediation edit is not local to its phase. After making it, re-run the `verify:` of every `done`
-   phase that lists the reopened phase in `depends_on`, and reopen any that goes red. `next_phase.py`
+   phase whose gate exercises a function the edit touched — in a single-file project that is normally
+   all of them — and reopen any that goes red. `depends_on` answers a different question: it encodes
+   build order, and when every phase edits the same function that order says almost nothing about
+   which gates a fix invalidates. `next_phase.py`
    never re-runs a gate, so a `done` phase whose assertion the fix invalidated is invisible to the FSM
    and ships green. The shape that breaks is a reconciliation phase whose gate hardcodes a count the
    fix just moved.
