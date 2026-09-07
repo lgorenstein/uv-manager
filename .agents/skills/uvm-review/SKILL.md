@@ -128,7 +128,11 @@ Launch a fresh `general-purpose` reviewer via `Agent`. Give it, inline, **only**
   out. Say which R-IDs an earlier cycle graded, or the reviewer reads their unchanged implementations
   as unmet — that much is prior-cycle information, disclosed deliberately and bounded to the R-ID
   list;
-- the full text of `invariants.md` and `review-rubric.md`;
+- `invariants.md` and `review-rubric.md` **by path**, read from the working tree rather than pasted:
+  both sit outside `spec/`, so no blindness is at stake, and `invariants.md` is frequently *inside*
+  the graded diff — a pasted copy hands the reviewer an orchestrator-mediated second version of the
+  file whose current contents are the thing under review. `GOAL.md` stays inline because it lives
+  under `spec/`, which the reviewer must not browse;
 - the instruction: work in the runnable repo; follow the refutation protocol; **run** the relevant
   gates — `bash -n bin/uv-manager`, `.agents/factory/bin/lint.sh`, and behavioral drives through
   `.agents/factory/bin/temp_root.sh [--offline] [--arch KEY]`, never the developer's real state root;

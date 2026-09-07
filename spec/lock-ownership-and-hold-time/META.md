@@ -423,7 +423,7 @@ that produced the defect — where the next reader meets them together.
 - **Confidence:** high · **Effort:** small
 
 ## F20 — Step 2 says to inline a file that is inside the graded diff
-`origin=uvm-review:step-2 severity=medium category=instruction status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-2 severity=medium category=instruction status=applied target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** Step 2's curated-input list says to give the reviewer "the full text of
   `invariants.md` and `review-rubric.md`". But `invariants.md` is routinely *part of the diff being
   graded* — it was on this branch, revised in six of the seven phases — and the rubric says so
