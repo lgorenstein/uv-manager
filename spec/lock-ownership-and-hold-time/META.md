@@ -318,7 +318,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F15 — no skill owns a mid-cycle GOAL amendment, on its second use
-`origin=harness-audit:amendment-route severity=medium category=missing-guidance status=open target=.agents/factory/methodology.md`
+`origin=harness-audit:amendment-route severity=medium category=missing-guidance status=applied target=.agents/factory/methodology.md`
 - **What happened:** a benchmarking run found a fourth defect in the function this cycle rewrites,
   after four phases had landed. Folding it in meant adding R8 to a locked `GOAL.md`, a Clarification,
   a `PLAN.md` design section, requirement-map and deviation rows, an invariant-gate note, and a

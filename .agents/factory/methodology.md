@@ -50,6 +50,15 @@ source and cuts a signed, tagged release. None touches the FSM or product requir
 and `/uvm-release` may append a finding to an existing `spec/{slug}/META.md` and nothing more;
 `/uvm-harness` writes none, which is what keeps the loop from recursing.
 
+**A contract can move mid-cycle, and that has a route.** The lifecycle assumes `GOAL.md` is settled
+before `/uvm-build` starts, and twice on one cycle a build found a defect that belonged in the
+contract. No skill owns it: `/uvm-feature` STOPs off `main`, `/uvm-build` only escalates,
+`/uvm-review` is not running. The amendment is a maintainer-gated commit on the cycle's own branch
+carrying the whole artifact set at once — the R-ID, its Clarification, the `PLAN.md` design and table
+rows, the invariant-gate note, any new phase — with a subject naming it an amendment. It states which
+soft circuit-breakers it crosses, and where it overturns an invariant rather than adding one, the
+`AGENTS.md` sign-off that decision needs is this commit itself.
+
 ## Load-bearing principles
 
 1. **`AGENTS.md` is the constitution.** There is no separate `constitution.md`; the skills reference
