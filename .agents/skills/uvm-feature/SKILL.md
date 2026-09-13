@@ -194,10 +194,14 @@ Re-read the GOAL. Is it solved, bounded to the appetite, and free of unresolved 
 requirement testable and observable? If not, iterate with the human before committing.
 
 Then run every *Checked by* clause that is a literal command against the current tree and record what
-it returned. A clause that cannot pass, or that passes before the work is done, is not a criterion —
-and it will be transcribed into a `verify:` that walks `--record-attempt` toward the circuit breaker
-while the code is correct. This is `/uvm-plan` Step 6's discipline one stage earlier, where these
-commands are first written and cheapest to test.
+it returned. A gate is defective when it passes *and* claims to show a defect, or fails *and* claims
+to pin behavior that must not change — never merely because of which way it went. Step 4 phrases a
+`kind: fix` cycle's criteria as broken→fixed behavior, so its gates are expected red now, and a
+collateral criterion demanding nothing else moved is expected green now and green after; record the
+observed status in the criterion either way. What this catches is the clause that cannot pass
+whatever the code does, transcribed into a `verify:` that walks `--record-attempt` toward the circuit
+breaker while the code is correct. This is `/uvm-plan` Step 6's discipline one stage earlier, where
+these commands are first written and cheapest to test.
 
 ### Step 6 — Meta-note (self-improvement loop · silence by default)
 Before committing, reflect on the **skillset itself** — not the task, not the code. Write nothing

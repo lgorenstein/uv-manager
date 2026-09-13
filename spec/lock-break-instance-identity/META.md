@@ -47,7 +47,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F2 — Step 5's gate-rehearsal rule contradicts itself for a fix cycle
-`origin=uvm-feature:5 severity=medium category=instruction status=open target=.agents/skills/uvm-feature/SKILL.md`
+`origin=uvm-feature:5 severity=medium category=instruction status=applied target=.agents/skills/uvm-feature/SKILL.md`
 - **What happened:** Step 5 says to run every literal *Checked by* command against the current tree,
   then rules that "a clause that cannot pass, or that passes before the work is done, is not a
   criterion". For a `kind: fix` cycle both halves are backwards. Three of this contract's six gates
