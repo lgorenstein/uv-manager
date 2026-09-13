@@ -179,6 +179,12 @@ reader to a stale index:
 
 Commit both edits alongside the GOAL.
 
+A seed this GOAL only writes into gets the same treatment, minus the adoption marker. `ROADMAP.md`
+carries one entry per issue, so landing an obligation in another seed under the non-goal rule above
+invalidates that seed's entry the moment its criteria change. An entry heading reading "Three small
+code gaps" against a seed now carrying four is a false index, in a file this same commit already has
+open.
+
 An issue promoted out of `.security/issues/` keeps its evidence in the hidden lane: the public
 `GOAL.md` states the **observable hardening outcome** and points at `.security/` for detail. It never
 republishes an attack mechanism for a weakness that is still live.
@@ -229,7 +235,7 @@ finding as a section **outside** any code fence:
 ```
 git add spec/{slug}/GOAL.md          # add spec/{slug}/META.md too if you recorded a meta-note
 git add issues/{slug}.md ROADMAP.md  # only when promoting: the two Step 4 edits
-git add issues/{other-slug}.md       # a sibling seed this GOAL wrote into
+git add issues/{other-slug}.md ROADMAP.md  # a sibling seed this GOAL wrote into, and its entry
 git commit -m "[{category}] Shape {slug} goal"
 ```
 `{category}` is the `AGENTS.md` commit category matching the work — normally `{kind}` itself

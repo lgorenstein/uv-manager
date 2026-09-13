@@ -29,7 +29,7 @@
 <!-- Real findings are appended below this line by the lifecycle skills. -->
 
 ## F1 — Step 4's roadmap-rewrite rule covers the promoted seed and not the siblings a promotion edits
-`origin=uvm-feature:4 severity=medium category=missing-guidance status=open target=.agents/skills/uvm-feature/SKILL.md`
+`origin=uvm-feature:4 severity=medium category=missing-guidance status=applied target=.agents/skills/uvm-feature/SKILL.md`
 - **What happened:** Step 4 specifies the adoption marker and says to "rewrite the entry body to the
   scope shaping settled" for *this* seed's `ROADMAP.md` entry. Landing the deferral obligations
   changed three sibling seeds — `invariant-audit-gaps` gained a fourth criterion, `test-harness`
