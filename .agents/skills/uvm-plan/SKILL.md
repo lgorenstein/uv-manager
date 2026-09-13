@@ -189,48 +189,29 @@ and each exclusion earns its reason in the phase body. Reconcile at plan time: n
 pathspec, extend it, or state in the phase body that an item — or the part of a *Checked by* clause
 no command can decide — is inspection-only so `/uvm-review` reads it rather than trusting the gate.
 
-Then run every `verify:` against the current tree before committing the plan. A gate asserting a
-post-condition the phase has not yet delivered must exit **non-zero**; one that exits 0 here is inert
-until proven otherwise, and will still be inert when `/uvm-build` reads its green as done. A
-*regression* gate inverts this and is legitimate: a criterion demanding that behavior not change is
-green before and after by construction, and contorting it into a red destroys what it measures. Such a
-gate is exempt from the red requirement; its phase is not. A phase carrying only regression gates owes
-at least one post-condition that is red today, or nothing about it is falsifiable. The failure
-that motivates this is silent: a census gate whose pathspec is interpolated from a variable searches
-one nonexistent path under `zsh`, which does not word-split, and reports a clean tree with thirteen
-hits in it. Write the paths literally. A prose anchor fails the same way: `git grep` matches within
-a line, and `README.md` and `AGENTS.md` hard-wrap near 100 columns, so a phrase long enough to be
-unique often spans two of them and never matches — the gate asserting a sentence is gone reads green
-while the sentence is still there. Confirm the anchor matches the file as it stands before gating on
-its absence. `git grep -c` counts per file and prints `bin/uv-manager:1`, never `1`, so
-`n=$(git grep -c flock -- bin/uv-manager); [ "$n" = 1 ]` is false against a tree whose count is
-right; `grep -c PATTERN path` prints the bare count and is the spelling a census wants.
+Then run every `verify:` against the current tree before committing the plan, and sort what comes
+back. The reading is the check, not the status:
 
-Under `set -e`, POSIX exempts `! cmd` from errexit: `sh -c 'set -e; ! true; echo REACHED'` prints
-`REACHED` and exits 0. A `! cmd` that is the gate's last command, or a link in an `&&` chain, still
-reports its status — most committed gates use it that way and are correct. Appending a drive after
-one silently disables it, and the gate then goes green with the assertion unmet. There, write
-`if cmd; then echo "FAIL: …" >&2; exit 1; fi`, which also names the post-condition that failed.
+- **Exit 0** — inert until proven otherwise, and still inert when `/uvm-build` reads its green as
+  done. A *regression* gate is the exception: a criterion demanding that behavior not change is green
+  before and after by construction, and contorting it into a red destroys what it measures. The gate
+  is exempt; its phase is not, and a phase carrying only regression gates owes at least one
+  post-condition that is red today, or nothing about it is falsifiable.
+- **Red on the asserted post-condition** — what a forward gate owes. In a multi-clause gate, confirm
+  it died on the *first* unmet clause: output from a later one means an earlier assertion ran without
+  aborting, and the gate turns green the day those later clauses pass.
+- **Red on an artefact a phase in its own `depends_on` has yet to produce** — legitimate, and the
+  normal case rather than an exception, since phases are ordered slices. Indistinguishable from the
+  reading below unless the gate says so, so guard the dependency:
+  `test -x tests/lock-race.sh || { echo "FAIL: P1 has not landed" >&2; exit 1; }`.
+- **Red on itself** — a typo, a missing flag, a tool that is not installed, a string the YAML layer
+  mangled, or one of the traps tabled in
+  [`templates/TECH.md`](../../factory/templates/TECH.md) § *Gate traps*. This one stays red through
+  the build, walking `--record-attempt` toward the circuit breaker at 3 while the code is correct.
 
-Red is necessary, not sufficient. Read the failure output and confirm the gate died on the asserted
-post-condition rather than on itself — a typo, a missing flag, a tool that is not installed, a string
-the YAML layer mangled. In a multi-clause gate, confirm it died on the *first* unmet clause: output
-from a later clause means an earlier assertion ran without aborting — usually a bare `! cmd` with
-something after it — and the gate turns green the day those later clauses pass. A gate red for its own
-reasons stays red through the build, walking `--record-attempt` toward the circuit breaker at 3 while
-the code is correct.
-
-A third reading sits between those two: a gate whose first unmet clause is an artefact a phase in its
-own `depends_on` has yet to produce. `tests/lock-race.sh: No such file or directory` is
-indistinguishable from the missing tool above, and phases are authored as ordered slices, which makes
-a gate waiting on an earlier one the normal case rather than an exception. Guard the dependency so
-the failure says which it is:
-`test -x tests/lock-race.sh || { echo "FAIL: P1 has not landed" >&2; exit 1; }`.
-
-When the output does not
-settle it, prove the gate can go green: copy the repository outside the working tree
-(`cp -R . "$(mktemp -d)/probe"`), apply the phase's change to the copy, and run the gate from inside
-it.
+When the output does not settle which of the last two you have, prove the gate can go green: copy the
+repository outside the working tree (`cp -R . "$(mktemp -d)/probe"`), apply the phase's change to the
+copy, and run the gate from inside it.
 
 Set top `status: planned`, `current_phase` to the first phase, and `last_updated` to today. The plan is
 written but not signed off; `/uvm-build` flips the top status to `in_progress` when it completes the

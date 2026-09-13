@@ -82,6 +82,20 @@ work. `uvm-build` executes the next actionable phase, runs its `verify:` command
 - `review.cycle`: completed review passes, auto-incremented by every `set_phase.py --verdict`.
   `REVIEW.md`'s "Cycle {n}" mirrors it and the two-to-three-cycle bound is graded against it.
 
+## Gate traps
+
+Each of these yields a gate that is green with its assertion unmet, or red against correct code.
+Reference, not reasoning: check a new gate against the list rather than remembering it, and add a row
+when a cycle finds another. A trap a *reviewer* needs while running a drive goes to
+[`review-rubric.md`](../review-rubric.md) instead — it reaches them and this file does not.
+
+| Written as | What it does | Write instead |
+|------------|--------------|---------------|
+| `git grep -n P -- $PATHS` | `zsh` does not word-split an unquoted parameter, so the census searches one nonexistent path and exits clean against a tree full of hits. | The paths literally. |
+| An anchor spanning a wrapped line | `git grep` matches within a line, and `README.md` and `AGENTS.md` wrap near 100 columns, so a phrase long enough to be unique often spans two and never matches — a gate asserting a sentence is gone reads green while it stands. | Confirm the anchor matches the file as it stands before gating on its absence. |
+| `n=$(git grep -c P -- path)` | Counts per file and prints `path:1`, never `1`, so a comparison against a bare number is false on a correct tree. | `grep -c P path`, which prints the bare count. |
+| `! cmd` with anything after it | POSIX exempts `! cmd` from `errexit`: `sh -c 'set -e; ! true; echo REACHED'` prints `REACHED` and exits 0. As a gate's last command or a link in an `&&` chain it still reports its status, and most committed gates are correct that way. | `if cmd; then echo "FAIL: …" >&2; exit 1; fi`, which also names the post-condition that failed. |
+
 ## Conventions (apply to every phase)
 
 - Commit conventions, code style, prose voice and load-bearing invariants come from
