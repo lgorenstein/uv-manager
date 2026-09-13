@@ -139,10 +139,17 @@ grep: the floor forbids what the syscall underneath happily provides — `rename
 exclusive, `mv -T` does not exist at the floor — and `uvm_point_current` already carries the
 documented fallback that says so.
 
+A mechanism whose evidence is a *rate* rather than a post-condition is re-measured at the researched
+size before its box is checked. A brief reporting zero failures over 3648 ranks has a confidence
+interval, and a defect at 1 burst in 40 is invisible to a run that did 40; a gate answers for a
+post-condition and cannot speak to a distribution. Disagreement with the brief is a finding about the
+brief.
+
 A design decision that is the maintainer's but does not touch `GOAL.md` is the middle case between
-those two, and it has one shape: state the options and their blast radius, ask, and record the answer
-as a dated line in the phase body the way `GOAL.md` records a clarification. Do not leave unchecked
-boxes describing work nobody has agreed to — a reversal then has nowhere to attach.
+amending `TECH.md` and escalating a `GOAL.md` contradiction, and it has one shape: state the options
+and their blast radius, ask, and record the answer as a dated line in the phase body the way
+`GOAL.md` records a clarification. Do not leave unchecked boxes describing work nobody has agreed
+to — a reversal then has nowhere to attach.
 
 ### Step 4 — Verify gate
 Run the phase's `verify:` command, plus any additional drive the change warrants. "Green" means **the

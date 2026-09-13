@@ -142,7 +142,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F8 — Nothing tells a build phase to re-measure a researched mechanism before adopting it wholesale
-`origin=uvm-build:P3 severity=medium category=missing-guidance status=open target=.agents/skills/uvm-build/SKILL.md`
+`origin=uvm-build:P3 severity=medium category=missing-guidance status=applied target=.agents/skills/uvm-build/SKILL.md`
 - **What happened:** P3's design came from a research brief that had measured it green over 3648
   ranks. Implemented as specified it wedged 1 burst in 40 — 64 ranks timing out against a lock nobody
   held — and took two rounds of diagnosis plus out-of-tree instrumentation to correct. Step 3 says to
