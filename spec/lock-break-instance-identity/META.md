@@ -191,7 +191,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F11 — Step 2 says to paste `GOAL.md` inline, with no sanctioned way to hand over a byte-exact copy
-`origin=uvm-review:step-2 severity=medium category=instruction status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-2 severity=medium category=instruction status=rejected target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** `GOAL.md` here is 239 lines / 18 KB, and Step 2 requires it "inline" so the
   reviewer never browses `spec/`. Retyping it into two prompts risks silently corrupting the contract
   the pass grades against. I staged a byte-exact `cp` into each reviewer's scratchpad instead.
