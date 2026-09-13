@@ -202,7 +202,9 @@ hits in it. Write the paths literally. A prose anchor fails the same way: `git g
 a line, and `README.md` and `AGENTS.md` hard-wrap near 100 columns, so a phrase long enough to be
 unique often spans two of them and never matches — the gate asserting a sentence is gone reads green
 while the sentence is still there. Confirm the anchor matches the file as it stands before gating on
-its absence.
+its absence. `git grep -c` counts per file and prints `bin/uv-manager:1`, never `1`, so
+`n=$(git grep -c flock -- bin/uv-manager); [ "$n" = 1 ]` is false against a tree whose count is
+right; `grep -c PATTERN path` prints the bare count and is the spelling a census wants.
 
 Under `set -e`, POSIX exempts `! cmd` from errexit: `sh -c 'set -e; ! true; echo REACHED'` prints
 `REACHED` and exits 0. A `! cmd` that is the gate's last command, or a link in an `&&` chain, still

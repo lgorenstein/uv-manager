@@ -101,7 +101,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F5 — The gate-authoring trap list omits `git grep -c`, which the same step recommends using
-`origin=uvm-plan:6 severity=low category=missing-guidance status=open target=.agents/skills/uvm-plan/SKILL.md`
+`origin=uvm-plan:6 severity=low category=missing-guidance status=applied target=.agents/skills/uvm-plan/SKILL.md`
 - **What happened:** `n=$(git grep -c flock -- bin/uv-manager); [ "$n" = 1 ]` is always false:
   `git grep -c` prints `bin/uv-manager:1`, not `1`. The gate was red while the code was correct, and
   would have walked `--record-attempt` toward the circuit breaker in a phase whose job is to prove
