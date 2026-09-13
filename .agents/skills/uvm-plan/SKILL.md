@@ -216,7 +216,16 @@ the YAML layer mangled. In a multi-clause gate, confirm it died on the *first* u
 from a later clause means an earlier assertion ran without aborting — usually a bare `! cmd` with
 something after it — and the gate turns green the day those later clauses pass. A gate red for its own
 reasons stays red through the build, walking `--record-attempt` toward the circuit breaker at 3 while
-the code is correct. When the output does not
+the code is correct.
+
+A third reading sits between those two: a gate whose first unmet clause is an artefact a phase in its
+own `depends_on` has yet to produce. `tests/lock-race.sh: No such file or directory` is
+indistinguishable from the missing tool above, and phases are authored as ordered slices, which makes
+a gate waiting on an earlier one the normal case rather than an exception. Guard the dependency so
+the failure says which it is:
+`test -x tests/lock-race.sh || { echo "FAIL: P1 has not landed" >&2; exit 1; }`.
+
+When the output does not
 settle it, prove the gate can go green: copy the repository outside the working tree
 (`cp -R . "$(mktemp -d)/probe"`), apply the phase's change to the copy, and run the gate from inside
 it.

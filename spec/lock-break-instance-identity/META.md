@@ -85,7 +85,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F4 — Step 6's red-gate rule has no category for a gate blocked on an earlier phase
-`origin=uvm-plan:6 severity=medium category=missing-guidance status=open target=.agents/skills/uvm-plan/SKILL.md`
+`origin=uvm-plan:6 severity=medium category=missing-guidance status=applied target=.agents/skills/uvm-plan/SKILL.md`
 - **What happened:** Step 6 sorts a red gate into two kinds — red on the asserted post-condition
   (good) or red for its own reasons (bad). Two of four phases here gate on a deliverable an earlier
   phase produces, so at plan time they died on `tests/lock-race.sh: No such file or directory`, which
