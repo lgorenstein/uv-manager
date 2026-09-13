@@ -119,11 +119,20 @@ Use `AskUserQuestion` to confirm the set and direction. The human shapes intent;
 design.
 
 Every run records either a rejection or a deletion candidate, and says plainly when it found neither.
-Measured across the factory's history: 4429 lines added under `.agents/` against 174 deleted, and 63
-applied against **0** rejected. A 98% apply rate is not a filter, and Safety §6's branch for a fix that
-repeats a previously-rejected one has never been written to. Ask what should come *out* — a rule
-another has overtaken, a paragraph whose precondition expired, guidance duplicated across two files —
-and treat "nothing this run" as an answer owed rather than a silence.
+The loop ran its first five weeks at 63 applied against **0** rejected, and `.agents/` still stands
+near twenty lines added for every one deleted; an apply rate that high is not a filter. Ask what
+should come *out* — a rule another has overtaken, a paragraph whose precondition expired, guidance
+duplicated across two files — and treat "nothing this run" as an answer owed rather than a silence.
+
+Then classify each fix you propose. A **fact** — a trap, a command's output shape, a portability
+quirk — belongs in a lookup structure, a table row or a list entry, and costs a reader nothing
+because nobody holds it in mind; such a list may grow without bound. A **judgment** is a rule that
+makes the agent weigh something, it lives in prose, and prose is the scarce resource: name the
+existing judgment it merges with, supersedes or sits beside, and when you cannot name one, say so.
+A step accumulating judgments that never meet is what `faf1f9a` had to unpick, where one question had
+six answers across four paragraphs. This is deliberately **not** a size cap — a cap makes deletion
+compete with correctness, and is met by densifying prose, which costs the next reader more than the
+lines it saves.
 
 ### Step 4 — Preview the concrete diff per finding
 For each finding to apply, **re-derive** the edit against the current `target` — do not trust a stored
