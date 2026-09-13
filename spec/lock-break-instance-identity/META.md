@@ -204,7 +204,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F12 — Nothing says what to do with a correctness observation from the completeness sub-pass
-`origin=uvm-review:step-5 severity=medium category=missing-guidance status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-5 severity=medium category=missing-guidance status=applied target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** The completeness agent, which has read `PLAN.md` and `TECH.md`, returned an
   unprompted correctness aside about `uvm_lock_mark`'s assignment point. Step 5 says only to append
   its notes to `REVIEW.md`. Promoting the aside would launder plan-informed suspicion into a blind

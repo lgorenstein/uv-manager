@@ -238,6 +238,13 @@ Launch a **separate** fresh subagent that *may* read `TECH.md` and ask: was ever
 actually shipped? did scope balloon beyond the appetite? Keep it isolated from the correctness pass so
 the plan never contaminates the correctness verdict. Append its notes to `REVIEW.md`.
 
+Tell it to label anything outside that remit as such. A sub-pass that has read `PLAN.md` and `TECH.md`
+returns correctness asides — this one questioned an assignment point in `uvm_lock_mark` — and both
+disposals are wrong: promoting one launders plan-informed suspicion into the verdict this pass is
+built to keep blind, and dropping it discards a real observation. Record them in `REVIEW.md` as
+untriaged observations, never as findings, and never feed one back to a correctness reviewer in this
+cycle or a later one.
+
 ### Final report
 Verdict, CONFIRMED/PLAUSIBLE counts, human-gate status, R-ID coverage (including anything taken on
 trust), and the recommended next step — `/uvm-build` to remediate, or `/uvm-publish` when approved.
