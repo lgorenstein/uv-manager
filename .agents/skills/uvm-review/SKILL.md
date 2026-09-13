@@ -112,15 +112,17 @@ Launch a fresh `general-purpose` reviewer via `Agent`. Give it, inline, **only**
 
 - the full text of `spec/{slug}/GOAL.md` — the contract, the R-IDs;
 - the command to produce the diff: `git diff {base}...HEAD -- . ':(exclude)spec/'`, plus
-  `git log --oneline {base}..HEAD -- . ':(exclude)spec/'`. Never a bare `git diff {base}...HEAD`,
+  `git log {base}..HEAD --format=%h -- . ':(exclude)spec/'`. Never a bare `git diff {base}...HEAD`,
   which leaks the committed spec artifacts into the reviewer's context — and the same pathspec belongs
   on the log, a channel the diff's cannot close: review-cycle commits touch only `spec/` and vanish
-  under it, but a build subject reads `[fix] Build {slug} P1: F1 — …` and names a prior cycle's
-  finding along with its remediation. On `review.cycle` ≥ 1 the log is
-  `git log {base}..HEAD --format=%h -- . ':(exclude)spec/'` — that whole command, not the one above
-  with a flag appended: everything after `--` is a pathspec, so a trailing `--format=%h` is read
-  as a path, `--oneline` survives, and the subjects print. Omitting the log is equally correct.
-  Anchoring on a prior verdict is the exact bias this pass exists to remove;
+  under it, but a build subject does not. Subjects are dropped on **every** cycle, cycle 1 included:
+  `/uvm-build` Step 7 puts `{id}: {phase name}` in each one by convention, so
+  `[fix] Build lock-break-instance-identity P3: age, pin, verify, remove` hands the reviewer
+  `TECH.md`'s decomposition before a prior cycle's findings are in play at all, and on a later cycle
+  that same subject also names the finding it remediates. Write the command out whole rather than
+  appending `--format=%h` to an `--oneline` form: everything after `--` is a pathspec, so the flag is
+  read as a path, `--oneline` survives, and the subjects print at exit 0. Omitting the log is equally
+  correct. Anchoring on a prior verdict is the exact bias this pass exists to remove;
 - on a cycle the human has scoped (Step 3): the narrowed range
   `git diff {review.last_reviewed_commit}..HEAD` under the same pathspec, plus a plain statement of
   the graded surface — the file count, and whether the delta is code or prose so the rubric's

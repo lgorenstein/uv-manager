@@ -176,7 +176,7 @@
 - **Confidence:** med · **Effort:** small
 
 ## F10 — On cycle 1 the reviewer's commit log leaks the plan's phase structure
-`origin=uvm-review:step-2 severity=high category=instruction status=open target=.claude/skills/uvm-review/SKILL.md`
+`origin=uvm-review:step-2 severity=high category=instruction status=applied target=.claude/skills/uvm-review/SKILL.md`
 - **What happened:** Step 2 drops the log's *subjects* only on `review.cycle` >= 1, and only because
   they name a prior cycle's findings. On cycle 1 it prescribes `git log --oneline`. This branch's
   build subjects read `[fix] Build lock-break-instance-identity P3: age, pin, verify, remove` — the
