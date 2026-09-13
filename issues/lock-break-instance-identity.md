@@ -1,5 +1,5 @@
 ---
-status: unshaped
+status: adopted:lock-break-instance-identity
 kind: fix
 appetite: big
 lane: public
@@ -9,6 +9,12 @@ lane: public
 
 > **Candidate, not a contract.** Deferred work recorded so a future session does not re-derive it.
 > Not graded by `uvm-review`; never copy into a `GOAL.md` verbatim.
+
+> **Superseded on 2026-09-09 by [`lock-simplification`](lock-simplification.md).** The measurement
+> half of this seed shipped as `tests/lock-race.sh`. The fix half is declined: the cycle that adopted
+> it confirmed three CRITICALs, two of them classes its own remedy introduced, and the wrapper was
+> reverted to `main`. The wrapper no longer breaks locks at all, so there is no break left to
+> constrain. Read that seed's § *Rejected — do not re-propose* before re-filing anything here.
 
 ## Problem
 
@@ -183,6 +189,19 @@ adopted while nobody worked them, `/uvm-feature` would have refused them later a
 seed, one cycle, one retirement is the arrangement those mechanisms are built for.
 
 R1 and R2 stay here, in this order, and still block on measurement.
+
+### R1 and R2 adopted (2026-09-08)
+
+Promoted as [`spec/lock-break-instance-identity/`](../spec/lock-break-instance-identity/GOAL.md), one
+cycle carrying both: the drive is R1 there, scoped to a lock-race drive at `tests/` and not the runner,
+and the fix is R3 there. The measurement debt is not discharged by promotion — it is the cycle's first
+work, and the fix is not acceptable without it.
+
+Three of the sketch's remaining items left for seeds that outlive this one, since
+`/uvm-roadmap` deletes this file when the cycle lands: R4 (attribution) and R6 (the denied break
+stripping `owner`) were taken into the cycle as its R2 and R4; R5 (the `ps -o lstart=` leash
+degrading in silence) went to `issues/invariant-audit-gaps.md` R4; the unmeasured performance claims
+went to `issues/test-harness.md` R7. The break path's own regression case is `test-harness.md` R3f.
 
 ## Outcome / vision
 
