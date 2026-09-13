@@ -134,6 +134,14 @@ that seeds each phase's `verify:` command.
 State explicitly what is being **removed**. A change that only adds is worth a second look in this
 repository.
 
+A shell idiom a brief recommends and the design adopts is executed against the portability floor
+before `PLAN.md` records it, and `PLAN.md` records what it returned. A brief here recommended a
+lock-age guard as `[[ "${lock}" -ot "${mark}" ]]`; bash documents `-ot` as true when the first file
+does not exist and the second does, so it passes exactly when the lock is already gone — fail-open in
+the one state the guard exists to catch — and a second brief reproduced the form. Step 6 runs every
+`verify:` for this reason. The design a brief hands over goes verbatim into the highest-risk function
+in the script, and nothing else runs it at all.
+
 ### Step 5 — Invariant gate #2 (post-design)
 Re-walk the touched invariant sections against the *drafted design*. Fill PLAN's deviation
 justification table for anything that bends an invariant or adds complexity, naming the simpler

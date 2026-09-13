@@ -67,7 +67,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F3 — Nothing requires a research brief's recommended shell idiom to be tested before it is adopted
-`origin=uvm-plan:3 severity=high category=missing-guidance status=open target=.agents/skills/uvm-plan/SKILL.md`
+`origin=uvm-plan:3 severity=high category=missing-guidance status=applied target=.agents/skills/uvm-plan/SKILL.md`
 - **What happened:** A brief recommended the fix's central guard as `[[ "${lock}" -ot "${mark}" ]]`.
   Bash documents `-ot` as true when file1 does not exist and file2 does, so that expression passes
   **exactly when the lock is already gone** — fail-open in the one state the guard exists to catch.
