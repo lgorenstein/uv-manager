@@ -129,7 +129,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F7 — `run_verify.py`'s trace escapes the gate's newlines, so a mangled gate and an intact one look alike
-`origin=uvm-build:P1 severity=low category=tooling status=open target=.agents/factory/bin/run_verify.py`
+`origin=uvm-build:P1 severity=low category=tooling status=applied target=.agents/factory/bin/run_verify.py`
 - **What happened:** The trace prints `+ /bin/sh -c 'set -eu\n.agents/factory/bin/lint.sh …'` with
   literal `\n` between every statement. That is precisely the shape of a gate whose newlines were
   lost in reflowing — the failure `run_verify.py` exists to prevent — so I had to reason from the

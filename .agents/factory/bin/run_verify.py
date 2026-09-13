@@ -89,7 +89,12 @@ def main(argv: list[str]) -> int:
 
     # exec, not a subprocess: the gate's exit status, signals and streams are the
     # caller's, so a `verify:` behaves the same here as it does run by hand.
-    print(f"+ /bin/sh -c {gate!r}", file=sys.stderr)
+    # repr() escapes every newline to a literal \n, which is indistinguishable from a
+    # gate whose newlines were lost in reflowing — the failure this script exists to
+    # make loud. Print the string the way /bin/sh receives it.
+    print(f"+ /bin/sh -c  # {len(gate)} bytes", file=sys.stderr)
+    for line in gate.splitlines():
+        print(f"| {line}", file=sys.stderr)
     sys.stderr.flush()
     try:
         os.execv("/bin/sh", ["/bin/sh", "-c", gate])
