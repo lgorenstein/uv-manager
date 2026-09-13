@@ -169,6 +169,16 @@ shell and executed later by `lint.sh`, by CI, and by anyone reading `TECH.md` un
 aliases, shell functions and GNU-versus-BSD utilities all diverge — a `grep` that is a shell function
 here is `/usr/bin/grep` there. A gate never observed failing is not a gate.
 
+Retuning puts that out of reach. Step 1's `set_phase.py --verify` and a mid-phase correction both
+happen after the code exists, so the pre-fix state is gone and the new assertion has never been seen
+failing. Construct an input it must reject and show it rejecting — a `--plant none` run against a
+block asserting five keys — which is the same evidence in the only form still available.
+
+Where the phase's change spans the script and the documentation the same gate asserts, revert only
+the file carrying the behavioral assertion, and name the clause you expect to fire. Reverting the
+whole phase makes the gate die on prose instead, and the reader cannot then tell which half it
+graded.
+
 A phase that adds a constraint — a refusal, a guard, anything that narrows legal inputs — invalidates
 gate *setups* elsewhere, and not only when a review sent you back. Re-run the `verify:` of every other
 phase, `done` and `pending` alike: a red `done` gate is invisible to the FSM and ships green, and a

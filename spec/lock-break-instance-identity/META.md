@@ -113,7 +113,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F6 — Step 4's "red before the fix" check is unavailable exactly when the skill tells you to retune a gate
-`origin=uvm-build:P1 severity=medium category=missing-guidance status=open target=.agents/skills/uvm-build/SKILL.md`
+`origin=uvm-build:P1 severity=medium category=missing-guidance status=applied target=.agents/skills/uvm-build/SKILL.md`
 - **What happened:** Step 4 says a new or retuned `verify:` must be confirmed "red before the fix and
   green after". I retuned P1's gate mid-phase — Step 1 prescribes `set_phase.py --verify` for exactly
   this — but by then the deliverable existed, so the pre-fix state the check wants was gone and the
@@ -161,7 +161,7 @@
 - **Confidence:** high · **Effort:** small
 
 ## F9 — Step 4's "prove it red" has no answer for a gate whose red state is a live filesystem race
-`origin=uvm-build:P3 severity=low category=missing-guidance status=open target=.agents/skills/uvm-build/SKILL.md`
+`origin=uvm-build:P3 severity=low category=missing-guidance status=applied target=.agents/skills/uvm-build/SKILL.md`
 - **What happened:** P3's gate had to be shown red before the fix. The fix spans `bin/uv-manager` plus
   two documentation files whose text the same gate also asserts, so reverting everything makes the
   gate fail on prose rather than on the race. I stashed **only** `bin/uv-manager`, which isolates the
